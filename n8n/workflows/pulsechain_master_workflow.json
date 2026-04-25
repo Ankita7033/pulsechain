@@ -1,955 +1,1611 @@
 {
-  "name": "PulseChain — Unified Epidemiological Signal Detection Engine v3.0",
+  "name": "PULSECHAIN WORKFLOW",
   "nodes": [
-
     {
       "parameters": {
         "rule": {
-          "interval": [{ "field": "minutes", "minutesInterval": 15 }]
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
         }
       },
-      "id": "cron-wastewater",
+      "id": "cf52ebd8-66d0-4249-90f9-5e00d8182683",
       "name": "⏱ Cron: Wastewater (15min)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [120, 140]
+      "position": [
+        -1360,
+        2480
+      ]
     },
-
     {
       "parameters": {
         "rule": {
-          "interval": [{ "field": "hours", "hoursInterval": 6 }]
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
         }
       },
-      "id": "cron-pharmacy",
+      "id": "ebb88392-9278-4b12-9ca5-3edff74b05a7",
       "name": "⏱ Cron: Pharmacy + Search (6h)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [120, 300]
+      "position": [
+        -1360,
+        2640
+      ]
     },
-
     {
       "parameters": {
         "rule": {
-          "interval": [{ "field": "minutes", "minutesInterval": 30 }]
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
         }
       },
-      "id": "cron-absenteeism",
+      "id": "baf4834a-efcf-4c85-97fa-5906c01d09f0",
       "name": "⏱ Cron: Absenteeism + ED (30min)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [120, 460]
+      "position": [
+        -1360,
+        2800
+      ]
     },
-
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "ac8a4487-8ffa-4a75-a3f0-a59a76244730",
+      "name": "⏱ Cron: SLA Watch (5min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1488,
+        3184
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9f166f3e-335c-4021-995d-e90bad84456c",
+              "leftValue": "={{ $json.is_valid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        2704
+      ],
+      "id": "554b9cf3-6da6-4795-b741-eba2eaba5cfd",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fromEmail": "ankitamaji7033@gmail.com",
+        "toEmail": "anki66377@gmail.com",
+        "subject": "PULSECHAIN — TIER 1 EMERGENCY",
+        "emailFormat": "text",
+        "text": "=Region: {{ $json.region }}\nAlert Level: TIER 1 — EMERGENCY\nRisk Score: 99.0%\nConfidence: High\n\nSummary:\nA critical disease outbreak has been detected in the Northwestern US region.\nCurrent signals indicate a severe anomaly consistent with a rapidly emerging public health threat.\n\nDominant Signal:\nPharmacy activity spike (extreme anomaly detected)\n\nRecommended Actions:{{ $json.recommended_actions }}\n\n\nSpread Risk:\nPotential for rapid regional spread within 3–7 days if not contained.\n\n\nTimestamp: {{ $json.created_at }}\n\nThis is an automated alert from the PulseChain Monitoring System.\nImmediate action is strongly advised.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2560,
+        2336
+      ],
+      "id": "e9c78608-bba0-4037-bb21-89f063512444",
+      "name": "Send an Email",
+      "webhookId": "51d61aab-2c22-4401-b11d-d71f0f3306c0",
+      "credentials": {
+        "smtp": {
+          "id": "6rK6mxguV9HtjcBR",
+          "name": "smtp-pulsechain"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "ankitamaji7033@gmail.com",
+        "toEmail": "amritakhan2010@gmail.com",
+        "subject": "[PULSECHAIN ADVISORY] Regional Anomaly Detected",
+        "html": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>PULSECHAIN Advisory</title>\n</head>\n\n<body style=\"margin:0; padding:0; font-family: Arial, sans-serif; background-color:#0f172a; color:#e5e7eb;\">\n\n  <div style=\"max-width:600px; margin:0 auto; padding:20px;\">\n\n    <!-- HEADER -->\n    <div style=\"background-color:#1e3a8a; padding:18px; text-align:center; border-radius:10px;\">\n      <h2 style=\"margin:0; color:#ffffff;\">\n        📡 PULSECHAIN ADVISORY NOTICE\n      </h2>\n      <p style=\"margin:6px 0 0; font-size:13px; color:#cbd5e1;\">\n        System Monitoring Alert\n      </p>\n    </div>\n\n    <!-- MAIN CARD -->\n    <div style=\"margin-top:20px; background-color:#111827; padding:20px; border-radius:10px;\">\n\n      <p><strong>Region:</strong> {{region_name}}</p>\n      <p><strong>Signal Source:</strong> {{dominant_signal}}</p>\n      <p><strong>Risk Score:</strong> {{risk_score}}</p>\n      <p><strong>Confidence:</strong> {{confidence}}</p>\n\n      <hr style=\"border:0; border-top:1px solid #374151; margin:18px 0;\">\n\n      <h3 style=\"color:#facc15;\">Summary</h3>\n      <p style=\"line-height:1.5;\">\n        {{explanation_summary}}\n      </p>\n\n      <h3 style=\"color:#facc15;\">Recommended Actions</h3>\n      <ul style=\"line-height:1.6;\">\n        <li>Continue monitoring regional signals</li>\n        <li>Validate anomaly with secondary sources</li>\n        <li>Prepare escalation threshold checks</li>\n        <li>Review system telemetry logs</li>\n      </ul>\n\n      <h3 style=\"color:#facc15;\">Forecast</h3>\n      <p>\n        Lead Time Estimate: <strong>{{lead_time}}</strong>\n      </p>\n\n    </div>\n\n    <!-- FOOTER -->\n    <div style=\"margin-top:18px; text-align:center; font-size:12px; color:#94a3b8;\">\n      Assessment ID: {{event_id}} <br>\n      Timestamp: {{timestamp}} <br>\n      Level: Advisory (Tier 2)\n    </div>\n\n  </div>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2576,
+        2464
+      ],
+      "id": "0113181d-60ae-4526-b873-9d361890d829",
+      "name": "Send an Email1",
+      "webhookId": "2933faf5-db81-4dd4-9e08-01ae76d5c9b9",
+      "credentials": {
+        "smtp": {
+          "id": "6rK6mxguV9HtjcBR",
+          "name": "smtp-pulsechain"
+        }
+      }
+    },
     {
       "parameters": {
         "url": "https://data.cdc.gov/resource/2ew6-ywp6.json",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
-            { "name": "$limit", "value": "100" },
-            { "name": "$order", "value": "date_end DESC" }
+            {
+              "name": "$limit",
+              "value": "100"
+            },
+            {
+              "name": "$order",
+              "value": "date_end DESC"
+            }
           ]
         },
-        "options": { "timeout": 15000, "response": { "response": { "responseFormat": "json" } } }
+        "options": {
+          "timeout": 15000
+        }
       },
-      "id": "fetch-wastewater",
-      "name": "🌊 Fetch CDC NWSS Wastewater",
+      "id": "b4e4a717-e19e-47e0-98b1-c9fce4e8ed83",
+      "name": "Fetch CDC NWSS Wastewater",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [380, 140]
+      "position": [
+        -1104,
+        2160
+      ]
     },
-
     {
       "parameters": {
         "url": "http://api:8000/v1/synthetic/pharmacy",
         "sendQuery": true,
         "queryParameters": {
-          "parameters": [{ "name": "region", "value": "all" }]
+          "parameters": [
+            {
+              "name": "region",
+              "value": "all"
+            }
+          ]
         },
-        "options": { "response": { "response": { "responseFormat": "json" } } }
+        "options": {}
       },
-      "id": "fetch-pharmacy",
-      "name": "💊 Fetch Pharmacy Data",
+      "id": "51254980-13f0-4683-8bee-950746873eec",
+      "name": "Fetch Pharmacy Data",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [380, 260]
+      "position": [
+        -1120,
+        2400
+      ]
     },
-
     {
       "parameters": {
         "url": "http://api:8000/v1/synthetic/search_trends",
         "sendQuery": true,
         "queryParameters": {
-          "parameters": [{ "name": "region", "value": "all" }]
+          "parameters": [
+            {
+              "name": "region",
+              "value": "all"
+            }
+          ]
         },
-        "options": { "response": { "response": { "responseFormat": "json" } } }
+        "options": {}
       },
-      "id": "fetch-search",
-      "name": "🔍 Fetch Search Trends",
+      "id": "5d570152-f104-4fba-81ef-f0f411c3a30a",
+      "name": "Fetch Search Trends",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [380, 340]
+      "position": [
+        -1104,
+        2592
+      ]
     },
-
     {
       "parameters": {
         "url": "http://api:8000/v1/synthetic/absenteeism",
         "sendQuery": true,
         "queryParameters": {
-          "parameters": [{ "name": "region", "value": "all" }]
+          "parameters": [
+            {
+              "name": "region",
+              "value": "all"
+            }
+          ]
         },
-        "options": { "response": { "response": { "responseFormat": "json" } } }
+        "options": {}
       },
-      "id": "fetch-absenteeism",
-      "name": "🏫 Fetch Absenteeism",
+      "id": "b4114fc4-2500-4f3c-b3e7-571df76ddd7c",
+      "name": "Fetch Absenteeism",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [380, 420]
+      "position": [
+        -1104,
+        2784
+      ]
     },
-
     {
       "parameters": {
         "url": "http://api:8000/v1/synthetic/ed_triage",
         "sendQuery": true,
         "queryParameters": {
-          "parameters": [{ "name": "region", "value": "all" }]
+          "parameters": [
+            {
+              "name": "region",
+              "value": "all"
+            }
+          ]
         },
-        "options": { "response": { "response": { "responseFormat": "json" } } }
+        "options": {}
       },
-      "id": "fetch-ed",
-      "name": "🏥 Fetch ED Triage",
+      "id": "9fb2e6d9-8973-4205-b960-3d1470d26ef6",
+      "name": "Fetch ED Triage",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [380, 500]
+      "position": [
+        -1104,
+        2960
+      ]
     },
-
     {
       "parameters": {
-        "jsCode": "// ============================================================\n// PULSECHAIN MASTER NORMALIZER\n// Accepts any raw API response and produces canonical events.\n// ============================================================\n\nfunction simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    hash = ((hash << 5) - hash) + str.charCodeAt(i);\n    hash |= 0;\n  }\n  return Math.abs(hash).toString(16);\n}\n\nconst regionNames = {\n  northeast: 'Northeastern US',\n  southeast: 'Southeastern US',\n  midwest:   'Midwestern US',\n  west:      'Western US'\n};\n\nconst allItems = $input.all();\nconst results = [];\n\nfunction processRow(row) {\n  // ---- WASTEWATER (CDC NWSS rows) ----\n  if (row.pcr_conc_smoothed !== undefined || row.wwtp_jurisdiction !== undefined) {\n    if (!row.pcr_conc_smoothed || !row.wwtp_jurisdiction || !row.date_end) return;\n    const signal = parseFloat(row.pcr_conc_smoothed);\n    if (isNaN(signal)) return;\n    const id = simpleHash('wastewater:' + row.wwtp_jurisdiction + ':' + row.date_end);\n    results.push({ json: {\n      event_id: id,\n      source: 'wastewater',\n      signal_key: 'pulsechain.wastewater',\n      region: row.wwtp_jurisdiction,\n      region_name: row.wwtp_jurisdiction,\n      signal_value: signal,\n      unit: 'copies_per_ml',\n      source_ts: row.date_end,\n      raw_payload: JSON.stringify(row),\n      ingested_at: new Date().toISOString()\n    }});\n    return;\n  }\n\n  // ---- PHARMACY ----\n  if (row.source === 'pharmacy' || row.purchase_index !== undefined) {\n    const signal = parseFloat(row.purchase_index) || 0;\n    const id = simpleHash('pharmacy:' + (row.region||'unknown') + ':' + (row.timestamp || row.source_ts || Date.now()));\n    results.push({ json: {\n      event_id: id,\n      source: 'pharmacy',\n      signal_key: 'pulsechain.pharmacy',\n      region: row.region || 'unknown',\n      region_name: row.region_name || regionNames[row.region] || row.region || 'unknown',\n      signal_value: signal,\n      unit: 'purchase_index',\n      source_ts: row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    return;\n  }\n\n  // ---- SEARCH TRENDS ----\n  if (row.source === 'search_trends' || row.search_index !== undefined) {\n    const signal = parseFloat(row.search_index ?? row.purchase_index) || 0;\n    const id = simpleHash('search_trends:' + (row.region||'unknown') + ':' + (row.timestamp || row.source_ts || Date.now()));\n    results.push({ json: {\n      event_id: id,\n      source: 'search_trends',\n      signal_key: 'pulsechain.search_trends',\n      region: row.region || 'unknown',\n      region_name: row.region_name || regionNames[row.region] || row.region || 'unknown',\n      signal_value: signal,\n      unit: 'search_index',\n      source_ts: row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    return;\n  }\n\n  // ---- ABSENTEEISM ----\n  if (row.source === 'absenteeism' || row.absenteeism_rate !== undefined) {\n    const signal = parseFloat(row.absenteeism_rate ?? row.rate ?? row.index) || 0;\n    const id = simpleHash('absenteeism:' + (row.region||'unknown') + ':' + (row.timestamp || row.source_ts || Date.now()));\n    results.push({ json: {\n      event_id: id,\n      source: 'absenteeism',\n      signal_key: 'pulsechain.absenteeism',\n      region: row.region || 'unknown',\n      region_name: row.region_name || regionNames[row.region] || row.region || 'unknown',\n      signal_value: signal,\n      unit: 'absenteeism_rate',\n      source_ts: row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    return;\n  }\n\n  // ---- ED TRIAGE ----\n  if (row.source === 'ed_triage' || row.triage_index !== undefined || row.visit_index !== undefined) {\n    const signal = parseFloat(row.triage_index ?? row.visit_index ?? row.severity_score ?? row.index) || 0;\n    const id = simpleHash('ed_triage:' + (row.region||'unknown') + ':' + (row.timestamp || row.source_ts || Date.now()));\n    results.push({ json: {\n      event_id: id,\n      source: 'ed_triage',\n      signal_key: 'pulsechain.ed_triage',\n      region: row.region || 'unknown',\n      region_name: row.region_name || regionNames[row.region] || row.region || 'unknown',\n      signal_value: signal,\n      unit: 'triage_index',\n      source_ts: row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    return;\n  }\n}\n\nfor (const item of allItems) {\n  const row = item.json;\n  if (!row) continue;\n\n  // Handle wrapped API responses with a data array\n  if (Array.isArray(row.data)) {\n    for (const sub of row.data) {\n      processRow(sub);\n    }\n  } else if (Array.isArray(row)) {\n    for (const sub of row) {\n      processRow(sub);\n    }\n  } else {\n    processRow(row);\n  }\n}\n\nconsole.log('Normalized ' + results.length + ' events from ' + allItems.length + ' raw items');\nreturn results.length > 0 ? results : [{ json: { _empty: true } }];\n"
+        "jsCode": "function simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    hash = ((hash << 5) - hash) + str.charCodeAt(i);\n    hash |= 0;\n  }\n  return Math.abs(hash).toString(16);\n}\n\nconst regionNames = {\n  northeast: 'Northeastern US',\n  southeast: 'Southeastern US',\n  midwest:   'Midwestern US',\n  west:      'Western US',\n  'us-national': 'US National'\n};\n\nconst stateToRegion = {\n  maine:'northeast',massachusetts:'northeast',rhodeisland:'northeast',\n  connecticut:'northeast',newhampshire:'northeast',vermont:'northeast',\n  newyork:'northeast',newjersey:'northeast',pennsylvania:'northeast',\n  maryland:'northeast',delaware:'northeast',\n  virginia:'southeast',westvirginia:'southeast',northcarolina:'southeast',\n  southcarolina:'southeast',georgia:'southeast',florida:'southeast',\n  alabama:'southeast',mississippi:'southeast',tennessee:'southeast',\n  kentucky:'southeast',arkansas:'southeast',louisiana:'southeast',\n  ohio:'midwest',michigan:'midwest',indiana:'midwest',illinois:'midwest',\n  wisconsin:'midwest',minnesota:'midwest',iowa:'midwest',missouri:'midwest',\n  northdakota:'midwest',southdakota:'midwest',nebraska:'midwest',kansas:'midwest',\n  texas:'west',oklahoma:'west',newmexico:'west',arizona:'west',\n  colorado:'west',wyoming:'west',montana:'west',idaho:'west',\n  utah:'west',nevada:'west',california:'west',oregon:'west',\n  washington:'west',alaska:'west',hawaii:'west'\n};\n\nfunction getRegion(jurisdiction) {\n  if (!jurisdiction) return 'us-national';\n  const key = jurisdiction.toLowerCase().replace(/\\s+/g, '');\n  return stateToRegion[key] || 'us-national';\n}\n\nconst allItems = $input.all();\nconst results = [];\n\nfor (const item of allItems) {\n  const row = item.json;\n\n  // ---- WASTEWATER (CDC NWSS API) ----\n  if (\n    row.wwtp_jurisdiction !== undefined ||\n    row.pcr_conc_smoothed !== undefined ||\n    row.percentile !== undefined ||\n    row.ptc_15d !== undefined\n  ) {\n    const signal = parseFloat(\n      row.pcr_conc_smoothed ?? row.pcr_conc ?? row.percentile ?? 0\n    );\n    const jurisdiction = row.wwtp_jurisdiction || row.jurisdiction || 'unknown';\n    const regionKey = getRegion(jurisdiction);\n    const dateEnd = row.date_end || row.date || new Date().toISOString();\n    const id = simpleHash('wastewater:' + jurisdiction + ':' + dateEnd);\n\n    results.push({ json: {\n      event_id:    id,\n      source:      'wastewater',\n      signal_key:  'pulsechain-wastewater',\n      region:      regionKey,\n      region_name: regionNames[regionKey] || jurisdiction,\n      signal_value: isNaN(signal) ? 0 : signal,\n      unit:        'percentile',\n      source_ts:   dateEnd,\n      ingested_at: new Date().toISOString()\n    }});\n    continue;\n  }\n\n  // ---- PHARMACY ----\n  if (row.source === 'pharmacy' || row.purchase_index !== undefined) {\n    const signal = parseFloat(row.purchase_index ?? 0);\n    const regionKey = row.region || 'us-national';\n    const id = simpleHash('pharmacy:' + regionKey + ':' + (row.timestamp || row.source_ts || Date.now()));\n\n    results.push({ json: {\n      event_id:    id,\n      source:      'pharmacy',\n      signal_key:  'pulsechain-pharmacy',\n      region:      regionKey,\n      region_name: row.region_name || regionNames[regionKey] || 'US National',\n      signal_value: isNaN(signal) ? 0 : signal,\n      unit:        'purchase_index',\n      source_ts:   row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    continue;\n  }\n\n  // ---- SEARCH TRENDS ----\n  if (row.source === 'search_trends' || row.search_index !== undefined) {\n    const signal = parseFloat(row.search_index ?? row.value ?? 0);\n    const regionKey = row.region || 'us-national';\n    const id = simpleHash('search_trends:' + regionKey + ':' + (row.timestamp || row.source_ts || Date.now()));\n\n    results.push({ json: {\n      event_id:    id,\n      source:      'search_trends',\n      signal_key:  'pulsechain-search-trends',\n      region:      regionKey,\n      region_name: row.region_name || regionNames[regionKey] || 'US National',\n      signal_value: isNaN(signal) ? 0 : signal,\n      unit:        'search_index',\n      source_ts:   row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    continue;\n  }\n\n  // ---- ABSENTEEISM ----\n  if (row.source === 'absenteeism' || row.absenteeism_rate !== undefined) {\n    const signal = parseFloat(row.absenteeism_rate ?? row.rate ?? row.index ?? 0);\n    const regionKey = row.region || 'us-national';\n    const id = simpleHash('absenteeism:' + regionKey + ':' + (row.timestamp || row.source_ts || Date.now()));\n\n    results.push({ json: {\n      event_id:    id,\n      source:      'absenteeism',\n      signal_key:  'pulsechain-absenteeism',\n      region:      regionKey,\n      region_name: row.region_name || regionNames[regionKey] || 'US National',\n      signal_value: isNaN(signal) ? 0 : signal,\n      unit:        'absenteeism_rate',\n      source_ts:   row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    continue;\n  }\n\n  // ---- ED TRIAGE ----\n  if (\n    row.source === 'ed_triage' ||\n    row.triage_index !== undefined ||\n    row.visit_index !== undefined\n  ) {\n    const signal = parseFloat(\n      row.triage_index ?? row.visit_index ?? row.severity_score ?? row.index ?? 0\n    );\n    const regionKey = row.region || 'us-national';\n    const id = simpleHash('ed_triage:' + regionKey + ':' + (row.timestamp || row.source_ts || Date.now()));\n\n    results.push({ json: {\n      event_id:    id,\n      source:      'ed_triage',\n      signal_key:  'pulsechain-ed-triage',\n      region:      regionKey,\n      region_name: row.region_name || regionNames[regionKey] || 'US National',\n      signal_value: isNaN(signal) ? 0 : signal,\n      unit:        'triage_index',\n      source_ts:   row.timestamp || row.source_ts || new Date().toISOString(),\n      ingested_at: new Date().toISOString()\n    }});\n    continue;\n  }\n\n  // ---- NESTED DATA ARRAYS ----\n  if (Array.isArray(row.data)) {\n    for (const sub of row.data) {\n      const src = sub.source || row.source || 'unknown';\n      const signal = parseFloat(\n        sub.purchase_index ?? sub.search_index ?? sub.absenteeism_rate ??\n        sub.triage_index ?? sub.visit_index ?? sub.pcr_conc_smoothed ??\n        sub.percentile ?? 0\n      );\n      const regionKey = sub.region || 'us-national';\n      const id = simpleHash(src + ':' + regionKey + ':' + (sub.timestamp || Date.now()));\n\n      results.push({ json: {\n        event_id:    id,\n        source:      src,\n        signal_key:  'pulsechain-' + src.replace(/_/g, '-'),\n        region:      regionKey,\n        region_name: sub.region_name || regionNames[regionKey] || 'US National',\n        signal_value: isNaN(signal) ? 0 : signal,\n        unit:        'index',\n        source_ts:   sub.timestamp || new Date().toISOString(),\n        ingested_at: new Date().toISOString()\n      }});\n    }\n  }\n}\n\nconsole.log('Normalized ' + results.length + ' events from ' + allItems.length + ' raw items');\nreturn results.length > 0 ? results : [{ json: { _empty: true } }];"
       },
-      "id": "master-normalizer",
-      "name": "🔧 Master Normalizer (All Sources)",
+      "id": "d2723e97-2254-4408-ba7c-3d946e8d5be0",
+      "name": "Master Normalizer (All Sources)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [640, 300]
+      "position": [
+        -832,
+        2640
+      ]
     },
-
     {
       "parameters": {
-        "jsCode": "// ============================================================\n// VALIDATION GATE\n// Output 0 = valid events → Kafka publish\n// Output 1 = invalid events → DLQ\n// ============================================================\nconst items = $input.all();\nconst valid = [];\nconst invalid = [];\n\nfor (const item of items) {\n  const d = item.json;\n  if (!d || d._empty) continue;\n\n  const errors = [];\n  if (!d.event_id) errors.push('missing event_id');\n  if (d.signal_value === undefined || d.signal_value === null) errors.push('missing signal_value');\n  if (typeof d.signal_value !== 'number') errors.push('signal_value not numeric');\n  if (!d.region) errors.push('missing region');\n  if (!d.source) errors.push('missing source');\n\n  if (d.source === 'wastewater' && (d.signal_value < 0 || d.signal_value > 50000000)) {\n    errors.push('wastewater value out of range: ' + d.signal_value);\n  }\n  if (['pharmacy','search_trends','absenteeism','ed_triage'].includes(d.source)) {\n    if (d.signal_value < 0 || d.signal_value > 1000) {\n      errors.push('index value out of range: ' + d.signal_value);\n    }\n  }\n\n  if (errors.length === 0) {\n    valid.push(item);\n  } else {\n    invalid.push({ json: { ...d, validation_errors: errors, dlq_reason: errors.join('; ') } });\n  }\n}\n\nconsole.log('Validation: ' + valid.length + ' valid, ' + invalid.length + ' invalid');\nreturn [valid, invalid];\n"
+        "jsCode": "const results = [];\n\nfor (const item of $input.all()) {\n  const d = item.json;\n  if (d._empty) continue;\n\n  const errors = [];\n  if (!d.event_id)                        errors.push('missing event_id');\n  if (d.signal_value == null)             errors.push('missing signal_value');\n  if (typeof d.signal_value !== 'number') errors.push('signal_value not numeric');\n  if (!d.source)                          errors.push('missing source');\n\n  if (d.source === 'wastewater' && (d.signal_value < 0 || d.signal_value > 50000000))\n    errors.push('wastewater out of range');\n\n  if (['pharmacy','search_trends','absenteeism','ed_triage'].includes(d.source) &&\n      (d.signal_value < 0 || d.signal_value > 1000))\n    errors.push('index out of range');\n\n  results.push({\n    json: {\n      ...d,\n      is_valid: errors.length === 0,\n      dlq_reason: errors.join('; ')\n    }\n  });\n}\n\nreturn results;"
       },
-      "id": "validate-gate",
-      "name": "✅ Validation Gate",
+      "id": "9ceeb344-c274-4a9f-b341-64399c2faa29",
+      "name": "Validation Gate",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [880, 300]
+      "position": [
+        -544,
+        2656
+      ]
     },
-
     {
       "parameters": {
-        "topic": "pulsechain.dlq",
-        "message": "={{ JSON.stringify($json) }}",
+        "topic": "pulsechain-signals",
         "options": {}
       },
-      "id": "dlq-sink",
-      "name": "☠️ Dead Letter Queue",
+      "id": "d4a88600-c58e-402d-aa26-bf0beb9cf97a",
+      "name": "Publish to Kafka",
       "type": "n8n-nodes-base.kafka",
       "typeVersion": 1,
-      "position": [1100, 480],
-      "continueOnFail": true,
+      "position": [
+        -80,
+        2704
+      ],
       "credentials": {
         "kafka": {
-          "id": "kafka-cred",
-          "name": "Kafka (pulsechain)"
+          "id": "IetYixDRPphntUXS",
+          "name": "kafka-pulsechain"
         }
-      }
+      },
+      "continueOnFail": true
     },
-
     {
       "parameters": {
-        "topic": "={{ $json.signal_key || 'pulsechain.unknown' }}",
-        "message": "={{ JSON.stringify($json) }}",
+        "topic": "pulsechain-dlq",
         "options": {}
       },
-      "id": "kafka-publish",
-      "name": "📡 Publish to Kafka",
+      "id": "9408a560-247a-4598-9f0b-e8a0f0811d5f",
+      "name": "Dead Letter Queue",
       "type": "n8n-nodes-base.kafka",
       "typeVersion": 1,
-      "position": [1100, 260],
-      "continueOnFail": true,
+      "position": [
+        -80,
+        2912
+      ],
       "credentials": {
         "kafka": {
-          "id": "kafka-cred",
-          "name": "Kafka (pulsechain)"
+          "id": "IetYixDRPphntUXS",
+          "name": "kafka-pulsechain"
         }
-      }
+      },
+      "continueOnFail": true
     },
-
     {
       "parameters": {
-        "topic": "pulsechain.wastewater,pulsechain.pharmacy,pulsechain.absenteeism,pulsechain.ed_triage,pulsechain.search_trends",
+        "topic": "pulsechain-signals",
         "groupId": "pulsechain-anomaly-v3",
-        "options": {
-          "allowAutoTopicCreation": true
-        }
+        "options": {}
       },
-      "id": "kafka-consumer",
-      "name": "📥 Kafka Consumer (All Topics)",
+      "id": "02bc083a-4749-45e7-8223-2bfa8a1a15d6",
+      "name": "Kafka Consumer (All Topics)",
       "type": "n8n-nodes-base.kafkaTrigger",
       "typeVersion": 1,
-      "position": [1100, 140],
+      "position": [
+        -80,
+        2528
+      ],
+      "alwaysOutputData": false,
       "credentials": {
         "kafka": {
-          "id": "kafka-cred",
-          "name": "Kafka (pulsechain)"
+          "id": "IetYixDRPphntUXS",
+          "name": "kafka-pulsechain"
         }
       }
     },
-
     {
       "parameters": {
-        "jsCode": "// ============================================================\n// EVENT ENRICHMENT + ID GUARANTEE\n// ============================================================\nconst e = $input.first().json || {};\n\n// crypto is available in n8n Code nodes via require\nlet id = e.event_id;\nif (!id) {\n  // Use a simple deterministic hash without require('crypto')\n  const str = (e.source || 'unknown') + ':' + (e.region || 'unknown') + ':' + (e.source_ts || Date.now());\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    hash = ((hash << 5) - hash) + str.charCodeAt(i);\n    hash |= 0;\n  }\n  id = 'evt_' + Math.abs(hash).toString(16);\n}\n\nreturn [{ json: { ...e, event_id: id, enriched_at: new Date().toISOString() } }];\n"
+        "jsCode": "// Parse Kafka message wrapper\nconst raw = $input.first().json;\nconst e = typeof raw.message === 'string' ? JSON.parse(raw.message) : raw;\n\n// Generate stable ID without crypto module\nfunction generateId(source, region, ts) {\n  const str = (source || 'unknown') + ':' + (region || 'unknown') + ':' + (ts || Date.now());\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    const char = str.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return Math.abs(hash).toString(16).padStart(8, '0') + \n         '-' + Date.now().toString(16) +\n         '-' + Math.random().toString(16).slice(2, 10);\n}\n\nconst id = e.event_id || generateId(e.source, e.region, e.source_ts);\n\nreturn [{ json: { ...e, event_id: id, enriched_at: new Date().toISOString() } }];"
       },
-      "id": "enrich-event",
-      "name": "🔑 Enrich + Guarantee ID",
+      "id": "aa3bd07c-61cc-4924-b7f0-906b1c0995d8",
+      "name": "Enrich + Guarantee ID",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1340, 140]
+      "position": [
+        176,
+        2528
+      ]
     },
-
     {
       "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT source, region, AVG(signal_value) as mean_value, STDDEV(signal_value) as std_dev, COUNT(*) as sample_count FROM signal_events WHERE source = '{{ $json.source }}' AND metadata->>'region' = '{{ $json.region }}' AND ingested_at >= NOW() - INTERVAL '30 days' GROUP BY source, region LIMIT 1;",
+        "operation": "select",
+        "schema": "public",
+        "table": "signal_baselines",
+        "where": {
+          "values": [
+            {
+              "column": "source",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "column": "region",
+              "value": "={{ $json.region }}"
+            }
+          ]
+        },
+        "combineConditions": "OR",
         "options": {}
       },
-      "id": "fetch-baseline",
-      "name": "📊 Fetch Baseline Stats",
+      "id": "dcc1fdcb-0ff8-437c-bdbb-0695cff0f1e0",
+      "name": "Fetch Baseline Stats",
       "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [1560, 140],
-      "continueOnFail": true,
+      "typeVersion": 2,
+      "position": [
+        368,
+        2528
+      ],
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
         }
-      }
+      },
+      "continueOnFail": true
     },
-
     {
       "parameters": {
-        "jsCode": "// ============================================================\n// Z-SCORE ANOMALY DETECTOR\n// ============================================================\n// Get the enriched event from the Enrich node\nlet event;\ntry {\n  event = $('🔑 Enrich + Guarantee ID').first().json;\n} catch(e) {\n  event = $input.first().json;\n}\n\nconst baselineRows = $input.all();\nconst baseline = (baselineRows.length > 0 && !baselineRows[0].json.error) ? baselineRows[0].json : null;\n\nlet z_score = 0;\nlet is_anomaly = false;\nlet detection_method = 'z_score';\n\nif (baseline && baseline.std_dev && parseFloat(baseline.std_dev) > 0) {\n  z_score = (event.signal_value - parseFloat(baseline.mean_value)) / parseFloat(baseline.std_dev);\n  is_anomaly = Math.abs(z_score) >= 2.0;\n} else {\n  detection_method = 'heuristic';\n  const thresholds = {\n    wastewater:    100000,\n    pharmacy:      70,\n    search_trends: 65,\n    absenteeism:   0.15,\n    ed_triage:     60\n  };\n  const threshold = thresholds[event.source] || 50;\n  is_anomaly = event.signal_value > threshold;\n  z_score = is_anomaly ? 2.5 : 0;\n}\n\nz_score = Math.round(z_score * 100) / 100;\n\nconsole.log('Anomaly check | ' + event.source + ' | ' + event.region +\n  ' | value=' + event.signal_value +\n  ' | z=' + z_score +\n  ' | anomaly=' + is_anomaly +\n  ' | method=' + detection_method);\n\nreturn [{ json: {\n  ...event,\n  z_score,\n  is_anomaly,\n  detection_method,\n  baseline_mean: baseline ? parseFloat(baseline.mean_value) : null,\n  baseline_std:  baseline ? parseFloat(baseline.std_dev) : null,\n  signal_context: {\n    [event.source]: {\n      value: event.signal_value,\n      z_score,\n      trust: 1.0,\n      freshness: 1.0\n    }\n  },\n  analyzed_at: new Date().toISOString()\n}}];\n"
+        "jsCode": "// ============================================================\n// Z-SCORE ANOMALY DETECTOR\n// Computes z-score vs historical baseline.\n// Falls back to a heuristic threshold if no baseline exists.\n// ============================================================\nconst baselineRows = $input.all();\nconst baseline = baselineRows.length > 0 && baselineRows[0].json.source ? baselineRows[0].json : null;\n\n// Get event from previous node context\nconst event = $node[\"Enrich + Guarantee ID\"].json;\n\nlet z_score = 0;\nlet is_anomaly = false;\nlet detection_method = 'z_score';\n\nif (baseline && baseline.std_dev && parseFloat(baseline.std_dev) > 0) {\n  z_score = (event.signal_value - parseFloat(baseline.mean)) / parseFloat(baseline.std_dev);\n  is_anomaly = Math.abs(z_score) >= 2.0;\n} else {\n  detection_method = 'heuristic';\n  const thresholds = {\n    wastewater:    100000,\n    pharmacy:      70,\n    search_trends: 65,\n    absenteeism:   0.15,\n    ed_triage:     60\n  };\n  const threshold = thresholds[event.source] || 50;\n  is_anomaly = event.signal_value > threshold;\n  z_score = is_anomaly ? 2.5 : 0;\n}\n\nz_score = Math.round(z_score * 100) / 100;\n\nreturn [{ json: {\n  ...event,\n  z_score,\n  is_anomaly,\n  detection_method,\n  baseline_mean: baseline ? parseFloat(baseline.mean) : null,\n  baseline_std:  baseline ? parseFloat(baseline.std_dev) : null,\n  signal_context: {\n    [event.source]: {\n      value: event.signal_value,\n      z_score,\n      trust: 1.0,\n      freshness: 1.0\n    }\n  },\n  analyzed_at: new Date().toISOString()\n}}];"
       },
-      "id": "compute-z",
-      "name": "📐 Z-Score Anomaly Detector",
+      "id": "ade0930d-01a3-4157-b1e1-174d5f845ce0",
+      "name": "Z-Score Anomaly Detector",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1780, 140]
+      "position": [
+        608,
+        2528
+      ]
     },
-
     {
       "parameters": {
-        "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
-          "conditions": [
-            {
-              "id": "anomaly-check",
-              "leftValue": "={{ $json.is_anomaly }}",
-              "rightValue": true,
-              "operator": { "type": "boolean", "operation": "equals" }
-            }
-          ],
-          "combinator": "and"
-        }
-      },
-      "id": "is-anomaly",
-      "name": "🚨 Is Anomaly?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [2000, 140]
-    },
-
-    {
-      "parameters": {
-        "operation": "insert",
-        "schema": { "value": "public", "__rl": true, "mode": "list" },
-        "table": { "value": "signal_events", "__rl": true, "mode": "list" },
+        "schema": "public",
+        "table": "signal_events",
         "dataMode": "defineBelow",
         "valuesToSend": {
           "values": [
-            { "column": "id",           "value": "={{ $json.event_id }}" },
-            { "column": "signal_type",  "value": "={{ $json.source }}" },
-            { "column": "signal_value", "value": "={{ $json.signal_value }}" },
-            { "column": "source",       "value": "={{ $json.source }}" },
-            { "column": "metadata",     "value": "={{ JSON.stringify({ region: $json.region, region_name: $json.region_name, z_score: $json.z_score, is_anomaly: $json.is_anomaly, detection_method: $json.detection_method }) }}" },
-            { "column": "ingested_at",  "value": "={{ $json.analyzed_at }}" }
+            {
+              "column": "signal_type",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "column": "signal_value",
+              "value": "={{ $json.signal_value }}"
+            },
+            {
+              "column": "source",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "column": "metadata",
+              "value": "={{ JSON.stringify({ region: $json.region, region_name: $json.region_name, z_score: $json.z_score, is_anomaly: $json.is_anomaly, detection_method: $json.detection_method }) }}"
+            },
+            {
+              "column": "ingested_at",
+              "value": "={{ $json.analyzed_at }}"
+            }
           ]
         },
-        "options": { "queryBatching": "transaction" }
+        "options": {}
       },
-      "id": "store-event",
-      "name": "💾 Store Signal Event",
+      "id": "f5f7b766-8473-40e5-830e-8988163375d0",
+      "name": "Store Signal Event",
       "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [2220, 300],
-      "continueOnFail": true,
+      "typeVersion": 2,
+      "position": [
+        784,
+        2528
+      ],
       "credentials": {
         "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
         }
-      }
-    },
-
-    {
-      "parameters": {
-        "jsCode": "// ============================================================\n// MULTI-SIGNAL AGGREGATOR / FUSION PAYLOAD BUILDER\n// ============================================================\nconst event = $input.first().json;\n\nconst signal_values = {\n  [event.source]: event.signal_value\n};\n\nreturn [{ json: {\n  region:          event.region,\n  region_name:     event.region_name || event.region,\n  signal_values:   signal_values,\n  signals:         event.signal_context,\n  prior:           0.02,\n  observed_values: { [event.source]: event.signal_value },\n  explain:         true,\n  forecast_spread: true,\n  horizon_days:    14,\n  pathogen:        'influenza',\n  event_id:        event.event_id,\n  z_score:         event.z_score,\n  source:          event.source,\n  signal_value:    event.signal_value,\n  _upstream:       event\n}}];\n"
       },
-      "id": "build-fusion-payload",
-      "name": "🧩 Build Fusion Payload",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [2220, 80]
-    },
-
-    {
-      "parameters": {
-        "url": "http://api:8000/v1/enhanced/analyze",
-        "method": "POST",
-        "sendBody": true,
-        "contentType": "json",
-        "body": "={{ JSON.stringify($json) }}",
-        "options": { "timeout": 20000, "response": { "response": { "responseFormat": "json" } } }
-      },
-      "id": "call-enhanced-api",
-      "name": "🧠 Call Enhanced Analysis API",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [2440, 80],
       "continueOnFail": true
     },
-
-    {
-      "parameters": {
-        "url": "http://api:8000/v1/fuse",
-        "method": "POST",
-        "sendBody": true,
-        "contentType": "json",
-        "body": "={{ JSON.stringify({ region: $json.region, region_name: $json.region_name, signals: $json.signals, prior: 0.02, observed_values: $json.observed_values, explain: true, forecast_spread: true, horizon_days: 14 }) }}",
-        "options": { "timeout": 20000, "response": { "response": { "responseFormat": "json" } } }
-      },
-      "id": "call-simple-fusion",
-      "name": "🔬 Call Simple Fusion Engine",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [2440, 220],
-      "continueOnFail": true
-    },
-
-    {
-      "parameters": {
-        "jsCode": "// ============================================================\n// BAYESIAN RESULT MERGER\n// Merges whichever fusion API responded; graceful fallback.\n// ============================================================\nlet upstream = {};\ntry { upstream = $('🧩 Build Fusion Payload').first().json._upstream || {}; } catch(e) {}\n\nlet enhanced = null;\ntry {\n  const r = $('🧠 Call Enhanced Analysis API').first();\n  if (r && r.json && !r.json.error) enhanced = r.json;\n} catch(e) {}\n\nlet simple = null;\ntry {\n  const r = $('🔬 Call Simple Fusion Engine').first();\n  if (r && r.json && !r.json.error) simple = r.json;\n} catch(e) {}\n\nconst fusion = enhanced || simple || {};\nconst bf = fusion.bayesian_fusion || fusion || {};\n\nconst posterior = bf.posterior_probability ??\n                  fusion.posterior_probability ??\n                  (upstream.z_score ? Math.min(0.99, Math.abs(upstream.z_score) / 4) : 0);\n\nconst rawTier = bf.alert_tier ?? fusion.alert_tier;\nlet alert_tier = rawTier;\nif (alert_tier === undefined) {\n  alert_tier = posterior >= 0.75 ? 1 : posterior >= 0.50 ? 2 : posterior >= 0.25 ? 3 : 0;\n}\n\nconst tierLabels = { 0: 'NORMAL', 1: 'EMERGENCY', 2: 'ADVISORY', 3: 'WATCH' };\n\nconst merged = {\n  event_id:              upstream.event_id || ('evt_' + Date.now()),\n  region:                upstream.region,\n  region_name:           upstream.region_name || upstream.region,\n  source:                upstream.source,\n  signal_value:          upstream.signal_value,\n  z_score:               upstream.z_score,\n  posterior_probability: parseFloat(posterior) || 0,\n  credible_interval:     bf.credible_interval || null,\n  confidence:            bf.confidence ?? (posterior > 0.5 ? 0.8 : 0.6),\n  dominant_signal:       bf.dominant_signal || upstream.source,\n  alert_tier:            parseInt(alert_tier) || 0,\n  tier_label:            tierLabels[parseInt(alert_tier)] || 'UNKNOWN',\n  drivers:               bf.drivers || fusion.drivers || [],\n  recommended_actions:   bf.recommended_actions || fusion.recommended_actions || [],\n  explanation_summary:   bf.explanation_summary || fusion.explanation_summary ||\n                         (fusion.explanation && fusion.explanation.summary) ||\n                         (upstream.source + ' anomaly detected in ' + (upstream.region_name || upstream.region) + ' (z=' + upstream.z_score + ')'),\n  explanation_markdown:  (fusion.explanation && fusion.explanation.markdown) || '',\n  spread_forecast:       bf.spread_forecast || fusion.spread_forecast || null,\n  lead_time_estimate:    bf.lead_time_estimate || '3-7 days',\n  log_odds_ratio:        (fusion.fusion && fusion.fusion.log_odds_ratio) || null,\n  bayesian_method:       (fusion.fusion && fusion.fusion.method) || 'naive_bayes',\n  fusion_source:         enhanced ? 'enhanced_api' : (simple ? 'simple_fusion' : 'heuristic'),\n  pipeline_version:      '3.0',\n  assessed_at:           new Date().toISOString(),\n  workflow_execution_id: $execution.id || null\n};\n\nconsole.log('=== BAYESIAN FUSION COMPLETE ===');\nconsole.log('Region:     ' + merged.region_name);\nconsole.log('Tier:       ' + merged.alert_tier + ' (' + merged.tier_label + ')');\nconsole.log('Posterior:  ' + (merged.posterior_probability * 100).toFixed(1) + '%');\nconsole.log('Confidence: ' + (merged.confidence * 100).toFixed(0) + '%');\nconsole.log('Fusion src: ' + merged.fusion_source);\n\nreturn [{ json: merged }];\n"
-      },
-      "id": "merge-fusion",
-      "name": "🔀 Merge Bayesian Results",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [2660, 140]
-    },
-
     {
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
-          "conditions": [
+          "number": [
             {
-              "id": "tier-check",
-              "leftValue": "={{ $json.alert_tier }}",
-              "rightValue": 1,
-              "operator": { "type": "number", "operation": "gte" }
+              "value1": "={{ $json.metadata.z_score }}",
+              "operation": "largerEqual",
+              "value2": 2
+            },
+            {
+              "value1": "={{ $json.metadata.z_score }}",
+              "operation": "smallerEqual",
+              "value2": -2
             }
-          ],
-          "combinator": "and"
-        }
+          ]
+        },
+        "combineOperation": "any"
       },
-      "id": "tier-check",
-      "name": "🎯 Alert Tier ≥ 1?",
+      "id": "c6677999-6cd3-48c6-88f9-f02b67a39257",
+      "name": "Is Anomaly?",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [2880, 140]
+      "typeVersion": 1,
+      "position": [
+        864,
+        2752
+      ]
     },
-
     {
       "parameters": {
-        "operation": "insert",
-        "schema": { "value": "public", "__rl": true, "mode": "list" },
-        "table": { "value": "risk_assessments", "__rl": true, "mode": "list" },
+        "jsCode": "const event = $input.first().json;\n\nconst signals = {};\nsignals[event.source] = {\n  z_score:   parseFloat(event.z_score) || 0,\n  trust:     1.0,\n  freshness: 1.0\n};\n\nconst payload = {\n  region:          event.region,\n  region_name:     event.region_name || event.region,\n  signals:         signals,\n  prior:           0.02,\n  observed_values: { [event.source]: parseFloat(event.signal_value) || 0 },\n  explain:         true,\n  forecast_spread: true,\n  horizon_days:    14,\n  _upstream:       event\n};\n\nreturn [{ json: payload }];"
+      },
+      "id": "e9fbe265-dac2-4f03-9e1c-1bbe350be903",
+      "name": "Build Fusion Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ════════════════════════════════════════════════════════════\n// PULSECHAIN — Merge & Tier Node (standalone, no fusion API)\n// ════════════════════════════════════════════════════════════\n\n// ── 1. Get raw signal from input ─────────────────────────────\nconst raw = $input.first().json || {};\n\n// Data is nested inside _upstream.metadata — flatten it\nconst meta = raw._upstream?.metadata || {};\nconst up   = raw._upstream || {};\n\nconst region       = meta.region       || raw.region       || 'unknown';\nconst region_name  = meta.region_name  || raw.region_name  || region;\nconst z_score      = meta.z_score      ?? raw.z_score      ?? 0;\nconst source       = up.signal_type    || raw.source       || 'unknown';\nconst signal_value = up.signal_value   || raw.signal_value || null;\nconst event_id     = up.id             || raw.event_id     || ('evt_' + Date.now());\nconst prior        = raw.prior         || 0.02;\n\n// ── 2. Compute posterior from z_score ────────────────────────\nconst z = parseFloat(z_score) || 0;\nlet posterior;\n\nif      (z >= 4.0) posterior = 0.99;\nelse if (z >= 3.0) posterior = 0.75 + (z - 3.0) * 0.24;\nelse if (z >= 2.0) posterior = 0.50 + (z - 2.0) * 0.25;\nelse if (z >= 1.5) posterior = 0.25 + (z - 1.5) * 0.50;\nelse if (z >= 1.0) posterior = 0.10 + (z - 1.0) * 0.30;\nelse               posterior = Math.max(0, z * 0.10);\n\nposterior = Math.min(0.99, Math.max(0, posterior));\n\n// ── 3. Alert tier ─────────────────────────────────────────────\nconst alert_tier = posterior >= 0.75 ? 1\n                 : posterior >= 0.50 ? 2\n                 : posterior >= 0.25 ? 3\n                 : 0;\n\nconst tierLabels = { 0:'NORMAL', 1:'EMERGENCY', 2:'ADVISORY', 3:'WATCH' };\n\n// ── 4. Build output ───────────────────────────────────────────\nconst merged = {\n  event_id,\n  region,\n  region_name,\n  source,\n  signal_value,\n  z_score,\n  posterior_probability: posterior,\n  credible_interval:     null,\n  confidence:            posterior > 0.75 ? 0.9 : posterior > 0.5 ? 0.8 : 0.6,\n  dominant_signal:       source,\n  alert_tier,\n  tier_label:            tierLabels[alert_tier],\n  drivers:               [],\n  recommended_actions:   alert_tier === 1 ? ['Notify health authority immediately','Activate emergency protocol','Dispatch field team','Issue public advisory']\n                       : alert_tier === 2 ? ['Notify regional health dept (2h)','Increase ED surveillance','Alert hospitals']\n                       : alert_tier === 3 ? ['Enhanced monitoring','Cross-verify with lab data','Review in 24h']\n                       : ['Continue routine monitoring'],\n  explanation_summary:   `${source} anomaly detected in ${region_name} (z=${Number(z_score).toFixed(2)})`,\n  explanation_markdown:  '',\n  spread_forecast:       null,\n  lead_time_estimate:    '3-7 days',\n  log_odds_ratio:        null,\n  bayesian_method:       'z_score_heuristic',\n  fusion_source:         'merge_node',\n  pipeline_version:      '3.0',\n  assessed_at:           new Date().toISOString(),\n  workflow_execution_id: $execution?.id || null,\n};\n\nconsole.log(`[PulseChain] region=${region} | source=${source} | z=${z_score} | posterior=${(posterior*100).toFixed(1)}% | tier=${alert_tier} (${tierLabels[alert_tier]})`);\n\nreturn [{ json: merged }];"
+      },
+      "id": "4a1e84b2-7ba6-4fbe-a921-7ab52a04927f",
+      "name": "Merge Bayesian Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1504,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.alert_tier }}",
+              "operation": "largerEqual",
+              "value2": 1
+            }
+          ]
+        }
+      },
+      "id": "7dde15b4-0afe-4eb8-9943-931933f7605d",
+      "name": "Alert Tier ≥ 1?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        2528
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// ALERT TIER NORMALIZER (inline — no sub-workflow needed)\n// ============================================================\nconst d = $input.first().json;\n\nlet tier = d.alert_tier;\nif (tier === undefined) {\n  if (d.severity === 'critical') tier = 1;\n  else if (d.severity === 'warning') tier = 2;\n  else if (d.severity === 'watch') tier = 3;\n  else {\n    const score = d.posterior_probability || d.risk_score || 0;\n    tier = score >= 0.75 ? 1 : score >= 0.50 ? 2 : score >= 0.25 ? 3 : 0;\n  }\n}\n\nconst tierLabels = { 1: 'EMERGENCY', 2: 'ADVISORY', 3: 'WATCH', 0: 'NORMAL' };\n\nconsole.log('Routing tier ' + tier + ' (' + tierLabels[tier] + ') for ' + (d.region_name || d.region));\n\nreturn [{ json: {\n  ...d,\n  alert_tier:  tier,\n  tier_label:  tierLabels[tier] || 'UNKNOWN',\n  routed_at:   new Date().toISOString()\n}}];\n"
+      },
+      "id": "eafe363d-b75f-49d4-8435-9b1cc4933307",
+      "name": "Normalize Alert Tier",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "=public",
+          "mode": ""
+        },
+        "table": "risk_assessments",
         "dataMode": "defineBelow",
         "valuesToSend": {
           "values": [
-            { "column": "assessment_id",    "value": "={{ 'asmt_' + $json.region + '_' + Date.now() }}" },
-            { "column": "region",           "value": "={{ $json.region }}" },
-            { "column": "region_name",      "value": "={{ $json.region_name }}" },
-            { "column": "risk_score",       "value": "={{ $json.posterior_probability || 0 }}" },
-            { "column": "alert_tier",       "value": "={{ $json.alert_tier || 0 }}" },
-            { "column": "signal_breakdown", "value": "={{ JSON.stringify($json.drivers || []) }}" },
-            { "column": "ai_narrative",     "value": "={{ ($json.explanation_summary || '').substring(0, 500) }}" },
-            { "column": "assessed_at",      "value": "={{ $json.assessed_at }}" }
+            {
+              "column": "assessment_id",
+              "value": "={{ 'asmt_' + $json.region + '_' + Date.now() }}"
+            },
+            {
+              "column": "region",
+              "value": "={{ $json.region }}"
+            },
+            {
+              "column": "region_name",
+              "value": "={{ $json.region_name }}"
+            },
+            {
+              "column": "risk_score",
+              "value": "={{ $json.posterior_probability || 0 }}"
+            },
+            {
+              "column": "alert_tier",
+              "value": "={{ $json.alert_tier || 0 }}"
+            },
+            {
+              "column": "signal_breakdown",
+              "value": "={{ JSON.stringify($json.signal_context || $json.drivers || {}) }}"
+            },
+            {
+              "column": "ai_narrative",
+              "value": "={{ ($json.explanation_summary || '').substring(0, 500) }}"
+            },
+            {
+              "column": "assessed_at",
+              "value": "={{ $json.assessed_at }}"
+            }
           ]
         },
-        "options": { "queryBatching": "transaction" }
+        "options": {}
       },
-      "id": "store-assessment",
-      "name": "💾 Store Risk Assessment",
+      "id": "fe08c754-5364-4b61-b676-a5f6f02f6479",
+      "name": "Store Risk Assessment",
       "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [3100, 300],
-      "continueOnFail": true,
+      "typeVersion": 2,
+      "position": [
+        1936,
+        2688
+      ],
       "credentials": {
         "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
         }
-      }
+      },
+      "continueOnFail": true
     },
-
+    {
+      "parameters": {},
+      "id": "797b743f-f8cd-4343-bc9f-a54345bdb1c2",
+      "name": "Below Tier 1 (Skip)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        2848
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "6efeac07-4bc7-4822-b84c-264d0ca250fd",
+      "name": "No Anomaly (Skip)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        2848
+      ]
+    },
     {
       "parameters": {
-        "jsCode": "// ALERT TIER NORMALIZER\nconst d = $input.first().json;\n\nlet tier = parseInt(d.alert_tier);\nif (isNaN(tier)) {\n  if (d.severity === 'critical') tier = 1;\n  else if (d.severity === 'warning') tier = 2;\n  else if (d.severity === 'watch') tier = 3;\n  else {\n    const score = parseFloat(d.posterior_probability || d.risk_score) || 0;\n    tier = score >= 0.75 ? 1 : score >= 0.50 ? 2 : score >= 0.25 ? 3 : 0;\n  }\n}\n\nconst tierLabels = { 1: 'EMERGENCY', 2: 'ADVISORY', 3: 'WATCH', 0: 'NORMAL' };\nconsole.log('Routing tier ' + tier + ' (' + tierLabels[tier] + ') for ' + (d.region_name || d.region));\n\nreturn [{ json: { ...d, alert_tier: tier, tier_label: tierLabels[tier] || 'UNKNOWN', routed_at: new Date().toISOString() } }];\n"
+        "jsCode": "const d = $input.first().json;\nconsole.log(' Normal — no alert for ' + (d.region_name || d.region));\nreturn [{ json: {\n  ...d,\n  notification_channel: 'none',\n  notification_sent_at: new Date().toISOString(),\n  actually_notified: false\n}}];\n"
       },
-      "id": "normalize-tier",
-      "name": "🔀 Normalize Alert Tier",
+      "id": "1ec856f1-8c1a-4fb1-a846-76cd5b62f8cf",
+      "name": "Normal — No Alert",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3100, 80]
+      "position": [
+        2368,
+        2752
+      ]
     },
-
     {
       "parameters": {
-        "dataType": "number",
         "value1": "={{ $json.alert_tier }}",
         "rules": {
           "rules": [
-            { "value2": 1, "output": 0 },
-            { "value2": 2, "output": 1 },
-            { "value2": 3, "output": 2 }
+            {
+              "operation": "equal",
+              "value2": 1
+            },
+            {
+              "operation": "equal",
+              "value2": 2
+            },
+            {
+              "operation": "largerEqual",
+              "value2": 2
+            },
+            {
+              "operation": "equal"
+            }
           ]
-        },
-        "fallbackOutput": 3
+        }
       },
-      "id": "tier-switch",
-      "name": "🔄 Tier Switch (1/2/3/Normal)",
+      "id": "23ed5273-8eb4-46a8-b878-d5620b424110",
+      "name": "Tier Switch (1/2/3/Normal)",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 2,
-      "position": [3320, 80]
+      "position": [
+        2160,
+        2464
+      ]
     },
-
     {
       "parameters": {
-        "jsCode": "const d = $input.first().json;\nconsole.log('🚨 TIER 1 EMERGENCY ALERT');\nconsole.log('Region:', d.region_name);\nconsole.log('Score:', ((d.posterior_probability || 0) * 100).toFixed(1) + '%');\n\nconst message = [\n  '🚨 PULSECHAIN — TIER 1 EMERGENCY',\n  '================================',\n  'Region:       ' + (d.region_name || d.region),\n  'Risk Score:   ' + ((d.posterior_probability || 0) * 100).toFixed(1) + '%',\n  'Confidence:   ' + ((d.confidence || 0) * 100).toFixed(0) + '%',\n  'Dominant:     ' + (d.dominant_signal || d.source),\n  '',\n  'Summary: ' + (d.explanation_summary || 'Anomaly detected'),\n  '',\n  'Recommended Actions:',\n  ...(d.recommended_actions || ['Activate emergency response protocol', 'Notify regional health authority']).map(a => '  • ' + a),\n  '',\n  'Assessment ID: ' + d.event_id,\n  'Timestamp: ' + d.assessed_at\n].join('\\n');\n\nreturn [{ json: { ...d, notification_channel: 'tier1_emergency', notification_message: message, notification_sent_at: new Date().toISOString(), actually_notified: false } }];\n"
+        "jsCode": "const d = $input.first().json;\n\nconst message = [\n  ' PULSECHAIN — TIER 1 EMERGENCY',\n  '================================',\n  'Region:       ' + d.region_name,\n  'Risk Score:   ' + (d.posterior_probability * 100).toFixed(1) + '%',\n  'Confidence:   ' + (d.confidence * 100).toFixed(0) + '%',\n  'Dominant:     ' + d.dominant_signal,\n  '',\n  'Summary: ' + d.explanation_summary,\n  '',\n  'Signal Drivers:',\n  ...(d.drivers || []).map(dr =>\n    '  • ' + (dr.label || dr.source || dr) + ': ' + (dr.display || dr.value || '')\n  ),\n  '',\n  'Recommended Actions:',\n  ...(d.recommended_actions || []).map(a => '  • ' + a),\n  '',\n  'Spread Risks:',\n  ...(d.spread_forecast?.spread_risks || []).slice(0, 3).map(\n    r => '  → ' + r.target + ': P=' + (r.spread_probability * 100).toFixed(0) + '% ETA=' + r.eta_days + 'd'\n  ),\n  '',\n  'Lead Time Estimate: ' + (d.lead_time_estimate || '3-7 days'),\n  'Assessment ID: ' + d.event_id,\n  'Timestamp: ' + d.assessed_at\n].join('\\n');\n\nreturn [{\n  json: {\n    to: \"your-email@example.com\",\n    subject: \" PULSECHAIN — TIER 1 EMERGENCY\",\n    region:d.region_name,\n    text: message,\n    event_id: d.event_id,\n    recommended_actions: d.recommended_actions,\n    notification_channel: \"tier1_emergency\",\n    created_at: new Date().toISOString()\n  }\n}];"
       },
-      "id": "handle-tier1",
-      "name": "🚨 TIER 1 — Emergency Handler",
+      "id": "b95fa919-2e49-459b-8cfb-7d221e764d24",
+      "name": "TIER 1 — Emergency Handler",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3540, -60],
+      "position": [
+        2368,
+        2320
+      ],
       "continueOnFail": true
     },
-
     {
       "parameters": {
-        "jsCode": "const d = $input.first().json;\nconsole.log('⚠️ TIER 2 ADVISORY ALERT');\nconsole.log('Region:', d.region_name);\nconsole.log('Score:', ((d.posterior_probability || 0) * 100).toFixed(1) + '%');\n\nconst message = [\n  '⚠️ PULSECHAIN — TIER 2 ADVISORY',\n  'Region:       ' + (d.region_name || d.region),\n  'Risk Score:   ' + ((d.posterior_probability || 0) * 100).toFixed(1) + '%',\n  'Summary: ' + (d.explanation_summary || 'Advisory signal detected'),\n  'Assessment ID: ' + d.event_id\n].join('\\n');\n\nreturn [{ json: { ...d, notification_channel: 'tier2_advisory', notification_message: message, notification_sent_at: new Date().toISOString(), actually_notified: false } }];\n"
+        "jsCode": "const d = $input.first().json;\n\nconsole.log(' TIER 2 ADVISORY ALERT');\nconsole.log('Region:', d.region_name);\nconsole.log('Score:', (d.posterior_probability * 100).toFixed(1) + '%');\n\nconst message = [\n  ' PULSECHAIN — TIER 2 ADVISORY',\n  '=================================',\n  'Region:       ' + d.region_name,\n  'Risk Score:   ' + (d.posterior_probability * 100).toFixed(1) + '%',\n  'Confidence:   ' + (d.confidence * 100).toFixed(0) + '%',\n  '',\n  'Summary: ' + d.explanation_summary,\n  '',\n  'Actions:',\n  ...(d.recommended_actions || ['Monitor situation closely', 'Prepare response resources', 'Brief health officials']).map(a => '  • ' + a),\n  '',\n  'Assessment ID: ' + d.event_id\n].join('\\n');\n\nreturn [{ json: {\n  ...d,\n  notification_channel: 'tier2_advisory',\n  notification_message: message,\n  notification_sent_at: new Date().toISOString(),\n  actually_notified: false\n}}];\n"
       },
-      "id": "handle-tier2",
-      "name": "⚠️ TIER 2 — Advisory Handler",
+      "id": "46340927-2917-4f49-8eb7-65e0a09fc1c7",
+      "name": "TIER 2 — Advisory Handler",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3540, 80],
+      "position": [
+        2368,
+        2464
+      ],
       "continueOnFail": true
     },
-
     {
       "parameters": {
-        "jsCode": "const d = $input.first().json;\nconsole.log('👁 TIER 3 WATCH MODE — ' + (d.region_name || d.region));\nreturn [{ json: { ...d, notification_channel: 'tier3_watch', notification_message: '👁 WATCH: ' + (d.region_name || d.region) + ' | Score: ' + ((d.posterior_probability || 0) * 100).toFixed(1) + '%', notification_sent_at: new Date().toISOString(), actually_notified: false } }];\n"
+        "jsCode": "const d = $input.first().json;\nconsole.log(' TIER 3 WATCH MODE — ' + d.region_name);\nreturn [{ json: {\n  ...d,\n  notification_channel: 'tier3_watch',\n  notification_message: ' WATCH: ' + d.region_name + ' | Score: ' + (d.posterior_probability*100).toFixed(1) + '%',\n  notification_sent_at: new Date().toISOString(),\n  actually_notified: false\n}}];\n"
       },
-      "id": "handle-tier3",
-      "name": "👁 TIER 3 — Watch Handler",
+      "id": "82d6b502-aa52-48a0-bb05-5d2d7d8b5d26",
+      "name": "TIER 3 — Watch Handler",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3540, 220],
+      "position": [
+        2368,
+        2608
+      ],
       "continueOnFail": true
     },
-
     {
       "parameters": {
-        "jsCode": "const d = $input.first().json;\nconsole.log('✅ Normal — no alert for ' + (d.region_name || d.region));\nreturn [{ json: { ...d, notification_channel: 'none', notification_sent_at: new Date().toISOString(), actually_notified: false } }];\n"
+        "jsCode": "// ============================================================\n// DISPATCH RECORDER + AUDIT TRAIL\n// Creates an immutable dispatch record for every alert.\n// In production: INSERT into alert_dispatches table.\n// Also triggers the audit logger inline.\n// ============================================================\nconst d = $input.first().json;\n\n// Generate ID without crypto\nfunction simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    const char = str.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return Math.abs(hash).toString(16).padStart(8, '0');\n}\n\nconst dispatch_id = 'dsp_' + d.event_id + '_' + (d.notification_channel || 'system') + '_' + Date.now();\n\nconst dispatchRecord = {\n  dispatch_id:      dispatch_id,\n  assessment_id:    d.event_id,\n  alert_tier:       d.alert_tier,\n  tier_label:       d.tier_label,\n  region:           d.region,\n  region_name:      d.region_name,\n  channel:          d.notification_channel,\n  status:           d.actually_notified ? 'sent' : 'logged_only',\n  message_preview:  (d.notification_message || '').substring(0, 200),\n  sent_at:          d.notification_sent_at,\n  recorded_at:      new Date().toISOString()\n};\n\n// Build audit log entry without crypto\nconst auditHashInput = (d.event_id || '') + (d.notification_sent_at || new Date().toISOString());\nconst auditHash = simpleHash(auditHashInput) + simpleHash(auditHashInput.split('').reverse().join(''));\n\nconst auditEntry = {\n  log_id:         auditHash,\n  workflow_id:    'pulsechain_unified_v3',\n  execution_id:   $execution.id || 'unknown',\n  node_name:      'dispatch_recorder',\n  action:         'tier_routed_and_dispatched',\n  decision_tier:  d.alert_tier,\n  operator_id:    'system',\n  metadata: JSON.stringify({\n    tier:              d.alert_tier,\n    tier_label:        d.tier_label,\n    region:            d.region,\n    region_name:       d.region_name,\n    posterior:         d.posterior_probability,\n    confidence:        d.confidence,\n    dominant_signal:   d.dominant_signal,\n    fusion_source:     d.fusion_source,\n    dispatch_id:       dispatch_id,\n    channel:           d.notification_channel,\n    actually_notified: d.actually_notified\n  }),\n  logged_at: new Date().toISOString()\n};\n\nconsole.log('=== DISPATCH RECORD ===');\nconsole.log(JSON.stringify(dispatchRecord, null, 2));\nconsole.log('=== AUDIT ENTRY ===');\nconsole.log(JSON.stringify(auditEntry, null, 2));\n\nreturn [{ json: { dispatch: dispatchRecord, audit: auditEntry, ...d, dispatch_id } }];"
       },
-      "id": "handle-normal",
-      "name": "✅ Normal — No Alert",
+      "id": "f2628acb-e02b-403a-ad1a-999065715789",
+      "name": "Record Dispatch + Audit",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3540, 360],
-      "continueOnFail": true
+      "position": [
+        2832,
+        2528
+      ]
     },
-
     {
       "parameters": {
-        "jsCode": "// ============================================================\n// RECORD DISPATCH + AUDIT\n// ============================================================\nconst d = $input.first().json;\nconst dispatch_id = 'disp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);\nconst log_id      = 'log_'  + Date.now() + '_' + Math.random().toString(36).slice(2, 8);\n\nreturn [{ json: {\n  ...d,\n  dispatch: {\n    dispatch_id,\n    assessment_id:   d.event_id || dispatch_id,\n    alert_tier:      d.alert_tier || 0,\n    region:          d.region || 'unknown',\n    channel:         d.notification_channel || 'none',\n    status:          'sent',\n    message_preview: (d.notification_message || '').substring(0, 200),\n    sent_at:         d.notification_sent_at || new Date().toISOString()\n  },\n  audit: {\n    log_id,\n    workflow_id:    'pulsechain_unified_v3',\n    execution_id:   $execution.id || 'unknown',\n    node_name:      'record_dispatch',\n    action:         'alert_dispatched',\n    decision_tier:  d.alert_tier || 0,\n    operator_id:    'system',\n    metadata:       JSON.stringify({ tier: d.alert_tier, region: d.region, source: d.source, z_score: d.z_score }),\n    logged_at:      new Date().toISOString()\n  }\n}}];\n"
-      },
-      "id": "record-dispatch",
-      "name": "📋 Record Dispatch + Audit",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [3760, 140]
-    },
-
-    {
-      "parameters": {
-        "operation": "insert",
-        "schema": { "value": "public", "__rl": true, "mode": "list" },
-        "table": { "value": "alert_dispatches", "__rl": true, "mode": "list" },
+        "schema": "public",
+        "table": "audit_log",
         "dataMode": "defineBelow",
         "valuesToSend": {
           "values": [
-            { "column": "dispatch_id",    "value": "={{ $json.dispatch.dispatch_id }}" },
-            { "column": "assessment_id",  "value": "={{ $json.dispatch.assessment_id }}" },
-            { "column": "alert_tier",     "value": "={{ $json.dispatch.alert_tier }}" },
-            { "column": "region",         "value": "={{ $json.dispatch.region }}" },
-            { "column": "channel",        "value": "={{ $json.dispatch.channel }}" },
-            { "column": "status",         "value": "={{ $json.dispatch.status }}" },
-            { "column": "message_preview","value": "={{ $json.dispatch.message_preview }}" },
-            { "column": "sent_at",        "value": "={{ $json.dispatch.sent_at }}" }
+            {
+              "column": "log_id",
+              "value": "={{ $json.audit.log_id }}"
+            },
+            {
+              "column": "workflow_id",
+              "value": "={{ $json.audit.workflow_id }}"
+            },
+            {
+              "column": "execution_id",
+              "value": "={{ $json.audit.execution_id }}"
+            },
+            {
+              "column": "node_name",
+              "value": "={{ $json.audit.node_name }}"
+            },
+            {
+              "column": "action",
+              "value": "={{ $json.audit.action }}"
+            },
+            {
+              "column": "decision_tier",
+              "value": "={{ $json.audit.decision_tier }}"
+            },
+            {
+              "column": "operator_id",
+              "value": "={{ $json.audit.operator_id }}"
+            },
+            {
+              "column": "metadata",
+              "value": "={{ $json.audit.metadata }}"
+            },
+            {
+              "column": "logged_at",
+              "value": "={{ $json.audit.logged_at }}"
+            }
           ]
         },
-        "options": { "queryBatching": "transaction" }
-      },
-      "id": "write-dispatch",
-      "name": "💾 Write Dispatch to DB",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [3980, 60],
-      "continueOnFail": true,
-      "credentials": {
-        "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
-        }
-      }
-    },
-
-    {
-      "parameters": {
-        "operation": "insert",
-        "schema": { "value": "public", "__rl": true, "mode": "list" },
-        "table": { "value": "audit_log", "__rl": true, "mode": "list" },
-        "dataMode": "defineBelow",
-        "valuesToSend": {
-          "values": [
-            { "column": "log_id",        "value": "={{ $json.audit.log_id }}" },
-            { "column": "workflow_id",   "value": "={{ $json.audit.workflow_id }}" },
-            { "column": "execution_id",  "value": "={{ $json.audit.execution_id }}" },
-            { "column": "node_name",     "value": "={{ $json.audit.node_name }}" },
-            { "column": "action",        "value": "={{ $json.audit.action }}" },
-            { "column": "decision_tier", "value": "={{ $json.audit.decision_tier }}" },
-            { "column": "operator_id",   "value": "={{ $json.audit.operator_id }}" },
-            { "column": "metadata",      "value": "={{ $json.audit.metadata }}" },
-            { "column": "logged_at",     "value": "={{ $json.audit.logged_at }}" }
-          ]
-        },
-        "options": { "queryBatching": "transaction" }
-      },
-      "id": "write-audit",
-      "name": "📝 Write Audit Log",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [3980, 220],
-      "continueOnFail": true,
-      "credentials": {
-        "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
-        }
-      }
-    },
-
-    {
-      "parameters": {
-        "rule": {
-          "interval": [{ "field": "minutes", "minutesInterval": 5 }]
-        }
-      },
-      "id": "cron-sla",
-      "name": "⏱ Cron: SLA Watch (5min)",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.1,
-      "position": [120, 700]
-    },
-
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT * FROM alert_dispatches WHERE status = 'sent' AND sent_at < NOW() - INTERVAL '15 minutes' LIMIT 20;",
         "options": {}
       },
-      "id": "find-dispatches",
-      "name": "📋 Find Unacknowledged Dispatches",
+      "id": "7ba23d5b-651d-4805-9137-afb3d18fc455",
+      "name": "Write Audit Log",
       "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [380, 700],
-      "continueOnFail": true,
+      "typeVersion": 2,
+      "position": [
+        3072,
+        2608
+      ],
       "credentials": {
         "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
         }
-      }
+      },
+      "continueOnFail": true
     },
-
     {
       "parameters": {
-        "jsCode": "const items = $input.all();\nconst count = items.filter(i => i.json && !i.json._empty && !i.json.error).length;\nconsole.log('SLA check: ' + count + ' dispatches pending acknowledgment');\nreturn [{ json: { count, checked_at: new Date().toISOString() } }];\n"
+        "schema": "public",
+        "table": "alert_dispatches",
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "dispatch_id",
+              "value": "={{ $json.dispatch.dispatch_id }}"
+            },
+            {
+              "column": "assessment_id",
+              "value": "={{ $json.dispatch.assessment_id }}"
+            },
+            {
+              "column": "alert_tier",
+              "value": "={{ $json.dispatch.alert_tier }}"
+            },
+            {
+              "column": "region",
+              "value": "={{ $json.dispatch.region }}"
+            },
+            {
+              "column": "channel",
+              "value": "={{ $json.dispatch.channel }}"
+            },
+            {
+              "column": "status",
+              "value": "={{ $json.dispatch.status }}"
+            },
+            {
+              "column": "message_preview",
+              "value": "={{ $json.dispatch.message_preview }}"
+            },
+            {
+              "column": "sent_at",
+              "value": "={{ $json.dispatch.sent_at }}"
+            }
+          ]
+        },
+        "options": {}
       },
-      "id": "count-dispatches",
-      "name": "🔢 Count Pending Dispatches",
+      "id": "294769c7-4532-45b5-8fa1-c7e15541c5c5",
+      "name": "Write Dispatch to DB",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        3040,
+        2384
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": "public",
+        "table": "alert_dispatches",
+        "limit": 20,
+        "where": {
+          "values": [
+            {
+              "column": "status",
+              "value": "sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f704d353-4c6c-4e4a-9ac4-b56aad1557d1",
+      "name": "Find Unacknowledged Dispatches",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -1232,
+        3184
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst count = items.filter(i => !i.json._empty).length;\nconsole.log('SLA check: ' + count + ' dispatches pending acknowledgment');\nreturn [{ json: { count, checked_at: new Date().toISOString() } }];\n"
+      },
+      "id": "51a8481b-f993-449c-a7fc-5ce4ab702123",
+      "name": "Count Pending Dispatches",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [600, 700]
+      "position": [
+        -1008,
+        3184
+      ]
     },
-
     {
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
-          "conditions": [
+          "number": [
             {
-              "id": "sla-check",
-              "leftValue": "={{ $json.count }}",
-              "rightValue": 0,
-              "operator": { "type": "number", "operation": "gt" }
+              "value1": "={{ $json.count }}",
+              "operation": "larger"
             }
-          ],
-          "combinator": "and"
+          ]
         }
       },
-      "id": "has-pending",
-      "name": "⚠️ SLA Breach?",
+      "id": "b31f9d36-13cf-4737-8c5c-cac5e1dd5a7b",
+      "name": "SLA Breach?",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [820, 700]
+      "typeVersion": 1,
+      "position": [
+        -784,
+        3184
+      ],
+      "disabled": true
     },
-
     {
       "parameters": {
-        "url": "https://events.pagerduty.com/v2/enqueue",
         "method": "POST",
-        "sendBody": true,
-        "contentType": "json",
-        "body": "={{ JSON.stringify({ routing_key: $vars.PAGERDUTY_ROUTING_KEY || 'demo-key', event_action: 'trigger', payload: { summary: 'PulseChain SLA breach: ' + $json.count + ' alerts unacknowledged', severity: 'warning', source: 'pulsechain-sla-monitor', timestamp: $json.checked_at } }) }}",
+        "url": "https://events.pagerduty.com/v2/enqueue",
         "options": {}
       },
-      "id": "page-sla",
-      "name": "📟 PagerDuty SLA Alert",
+      "id": "4f960903-a974-4099-ae50-adf3e4f9f2b8",
+      "name": "PagerDuty SLA Alert",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [1040, 700],
+      "position": [
+        -560,
+        3184
+      ],
       "continueOnFail": true
     },
-
     {
       "parameters": {},
-      "id": "err-trigger",
-      "name": "💥 Error Trigger",
+      "id": "009ea766-4767-4cef-8aa1-c89360c64dc1",
+      "name": "Error Trigger",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
-      "position": [120, 900]
+      "position": [
+        -1488,
+        3376
+      ]
     },
-
     {
       "parameters": {
-        "jsCode": "// ERROR CLASSIFIER\nconst e = $input.first().json || {};\nconst msg = (e.error && e.error.message) || 'Unknown error';\nlet severity = 'warning';\nlet page = false;\nlet retry = true;\n\nconst errorName = (e.error && e.error.name) || '';\nif (['NodeConnectionError','NetworkError'].includes(errorName)) {\n  severity = 'error';\n} else if (errorName === 'AuthenticationError') {\n  severity = 'critical';\n  page = true;\n  retry = false;\n} else if (msg.toLowerCase().includes('kafka') || msg.toLowerCase().includes('postgres')) {\n  severity = 'critical';\n  page = true;\n}\n\nconsole.error('PulseChain Error | ' + severity + ' | ' + msg);\n\nreturn [{ json: {\n  error_id:       'err_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),\n  workflow_name:  (e.workflow && e.workflow.name) || 'pulsechain_unified_v3',\n  execution_id:   (e.execution && e.execution.id) || $execution.id,\n  error_type:     errorName || 'Error',\n  error_message:  msg,\n  severity,\n  should_page:    page,\n  should_retry:   retry,\n  occurred_at:    new Date().toISOString(),\n  raw_error:      JSON.stringify(e).substring(0, 1000)\n}}];\n"
+        "jsCode": "// ============================================================\n// ERROR CLASSIFIER\n// Categorizes errors by severity and decides paging + retry.\n// ============================================================\nconst e = $input.first().json || {};\nconst msg = e.error?.message || 'Unknown error';\nlet severity = 'warning';\nlet page = false;\nlet retry = true;\n\nif (['NodeConnectionError','NetworkError'].includes(e.error?.name)) {\n  severity = 'error';\n} else if (e.error?.name === 'AuthenticationError') {\n  severity = 'critical';\n  page = true;\n  retry = false;\n} else if (msg.toLowerCase().includes('kafka') || msg.toLowerCase().includes('postgres')) {\n  severity = 'critical';\n  page = true;\n}\n\nconsole.error('PulseChain Error | ' + severity + ' | ' + msg);\n\nreturn [{ json: {\n  error_id:       'err_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),\n  workflow_name:  e.workflow?.name || 'pulsechain_unified_v3',\n  execution_id:   e.execution?.id || $execution.id,\n  error_type:     e.error?.name || 'Error',\n  error_message:  msg,\n  severity,\n  should_page:    page,\n  should_retry:   retry,\n  occurred_at:    new Date().toISOString(),\n  raw_error:      JSON.stringify(e)\n}}];\n"
       },
-      "id": "classify-error",
-      "name": "🔍 Classify Error",
+      "id": "f1bdfc14-7de0-4373-afed-fad22219a74a",
+      "name": "Classify Error",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [380, 900]
+      "position": [
+        -1232,
+        3376
+      ]
     },
-
-    {
-      "parameters": {
-        "operation": "insert",
-        "schema": { "value": "public", "__rl": true, "mode": "list" },
-        "table": { "value": "audit_log", "__rl": true, "mode": "list" },
-        "dataMode": "defineBelow",
-        "valuesToSend": {
-          "values": [
-            { "column": "log_id",       "value": "={{ $json.error_id }}" },
-            { "column": "workflow_id",  "value": "={{ $json.workflow_name }}" },
-            { "column": "execution_id", "value": "={{ $json.execution_id }}" },
-            { "column": "node_name",    "value": "error_recovery" },
-            { "column": "action",       "value": "workflow_error" },
-            { "column": "operator_id",  "value": "system" },
-            { "column": "metadata",     "value": "={{ JSON.stringify({ error_type: $json.error_type, message: $json.error_message, severity: $json.severity }) }}" },
-            { "column": "logged_at",    "value": "={{ $json.occurred_at }}" }
-          ]
-        },
-        "options": { "queryBatching": "transaction" }
-      },
-      "id": "log-error",
-      "name": "💾 Log Error to DB",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [600, 840],
-      "continueOnFail": true,
-      "credentials": {
-        "postgres": {
-          "id": "postgres-cred",
-          "name": "TimescaleDB (pulsechain)"
-        }
-      }
-    },
-
     {
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
-          "conditions": [
+          "boolean": [
             {
-              "id": "page-check",
-              "leftValue": "={{ $json.should_page }}",
-              "rightValue": true,
-              "operator": { "type": "boolean", "operation": "equals" }
+              "value1": "={{ $json.should_page }}",
+              "value2": true
             }
-          ],
-          "combinator": "and"
+          ]
         }
       },
-      "id": "should-page",
-      "name": "📟 Should Page On-Call?",
+      "id": "94a2b043-8008-4e32-9e0c-8d66637f5a82",
+      "name": "Should Page On-Call?",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [600, 960]
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        3552
+      ]
     },
-
     {
       "parameters": {
-        "url": "https://events.pagerduty.com/v2/enqueue",
-        "method": "POST",
-        "sendBody": true,
-        "contentType": "json",
-        "body": "={{ JSON.stringify({ routing_key: $vars.PAGERDUTY_ROUTING_KEY || 'demo-key', event_action: 'trigger', payload: { summary: 'PulseChain ' + ($json.severity || 'error').toUpperCase() + ': ' + ($json.error_message || 'Unknown error').substring(0,100), severity: $json.severity || 'error', source: 'pulsechain', component: $json.workflow_name } }) }}",
+        "schema": "public",
+        "table": "audit_log",
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "log_id",
+              "value": "={{ $json.error_id }}"
+            },
+            {
+              "column": "workflow_id",
+              "value": "={{ $json.workflow_name }}"
+            },
+            {
+              "column": "execution_id",
+              "value": "={{ $json.execution_id }}"
+            },
+            {
+              "column": "node_name",
+              "value": "error_recovery"
+            },
+            {
+              "column": "action",
+              "value": "workflow_error"
+            },
+            {
+              "column": "operator_id",
+              "value": "system"
+            },
+            {
+              "column": "metadata",
+              "value": "={{ JSON.stringify({ error_type: $json.error_type, message: $json.error_message, severity: $json.severity }) }}"
+            },
+            {
+              "column": "logged_at",
+              "value": "={{ $json.occurred_at }}"
+            }
+          ]
+        },
         "options": {}
       },
-      "id": "page-oncall",
-      "name": "📟 PagerDuty On-Call",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [820, 900],
+      "id": "6f9995a8-025e-409b-824f-f661480ee3b6",
+      "name": "Log Error to DB",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        3360
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "UIqizM43Rvo5kUzP",
+          "name": "postgres-pulsechain"
+        }
+      },
       "continueOnFail": true
     },
-
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://events.pagerduty.com/v2/enqueue",
+        "options": {}
+      },
+      "id": "e8410474-fdcd-42e3-87e0-5e1b73ee82c5",
+      "name": "PagerDuty On-Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -720,
+        3440
+      ],
+      "continueOnFail": true
+    },
     {
       "parameters": {
         "topic": "pulsechain.dlq",
-        "message": "={{ JSON.stringify($json) }}",
         "options": {}
       },
-      "id": "dlq-error",
-      "name": "☠️ Error → DLQ",
+      "id": "2796e5a8-8fd0-42d1-9c3b-8c010cbbeaf3",
+      "name": "Error → DLQ",
       "type": "n8n-nodes-base.kafka",
       "typeVersion": 1,
-      "position": [820, 1020],
-      "continueOnFail": true,
+      "position": [
+        -576,
+        3712
+      ],
       "credentials": {
         "kafka": {
-          "id": "kafka-cred",
-          "name": "Kafka (pulsechain)"
+          "id": "IetYixDRPphntUXS",
+          "name": "kafka-pulsechain"
+        }
+      },
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {
+    "Kafka Consumer (All Topics)": [
+      {
+        "json": {
+          "event_id": "emergency-trigger-real",
+          "source": "pharmacy",
+          "signal_value": 25000,
+          "region": "northwest",
+          "region_name": "Northwestern US",
+          "metadata": {
+            "region": "northwest",
+            "region_name": "Northwestern US"
+          },
+          "ingested_at": "2026-04-23T19:10:00Z"
         }
       }
-    },
-
-    {
-      "parameters": {},
-      "id": "no-anomaly",
-      "name": "🟢 No Anomaly (Skip)",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [2220, 460]
-    },
-
-    {
-      "parameters": {},
-      "id": "below-tier1",
-      "name": "🟡 Below Tier 1 (Skip)",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [3100, 460]
-    }
-
-  ],
-
+    ]
+  },
   "connections": {
     "⏱ Cron: Wastewater (15min)": {
-      "main": [[{ "node": "🌊 Fetch CDC NWSS Wastewater", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Fetch CDC NWSS Wastewater",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "⏱ Cron: Pharmacy + Search (6h)": {
-      "main": [[
-        { "node": "💊 Fetch Pharmacy Data", "type": "main", "index": 0 },
-        { "node": "🔍 Fetch Search Trends", "type": "main", "index": 0 }
-      ]]
+      "main": [
+        [
+          {
+            "node": "Fetch Pharmacy Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Search Trends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "⏱ Cron: Absenteeism + ED (30min)": {
-      "main": [[
-        { "node": "🏫 Fetch Absenteeism", "type": "main", "index": 0 },
-        { "node": "🏥 Fetch ED Triage", "type": "main", "index": 0 }
-      ]]
-    },
-    "🌊 Fetch CDC NWSS Wastewater": {
-      "main": [[{ "node": "🔧 Master Normalizer (All Sources)", "type": "main", "index": 0 }]]
-    },
-    "💊 Fetch Pharmacy Data": {
-      "main": [[{ "node": "🔧 Master Normalizer (All Sources)", "type": "main", "index": 0 }]]
-    },
-    "🔍 Fetch Search Trends": {
-      "main": [[{ "node": "🔧 Master Normalizer (All Sources)", "type": "main", "index": 0 }]]
-    },
-    "🏫 Fetch Absenteeism": {
-      "main": [[{ "node": "🔧 Master Normalizer (All Sources)", "type": "main", "index": 0 }]]
-    },
-    "🏥 Fetch ED Triage": {
-      "main": [[{ "node": "🔧 Master Normalizer (All Sources)", "type": "main", "index": 0 }]]
-    },
-    "🔧 Master Normalizer (All Sources)": {
-      "main": [[{ "node": "✅ Validation Gate", "type": "main", "index": 0 }]]
-    },
-    "✅ Validation Gate": {
-      "main": [
-        [{ "node": "📡 Publish to Kafka", "type": "main", "index": 0 }],
-        [{ "node": "☠️ Dead Letter Queue", "type": "main", "index": 0 }]
-      ]
-    },
-    "📥 Kafka Consumer (All Topics)": {
-      "main": [[{ "node": "🔑 Enrich + Guarantee ID", "type": "main", "index": 0 }]]
-    },
-    "🔑 Enrich + Guarantee ID": {
-      "main": [[{ "node": "📊 Fetch Baseline Stats", "type": "main", "index": 0 }]]
-    },
-    "📊 Fetch Baseline Stats": {
-      "main": [[{ "node": "📐 Z-Score Anomaly Detector", "type": "main", "index": 0 }]]
-    },
-    "📐 Z-Score Anomaly Detector": {
-      "main": [[{ "node": "🚨 Is Anomaly?", "type": "main", "index": 0 }]]
-    },
-    "🚨 Is Anomaly?": {
       "main": [
         [
-          { "node": "🧩 Build Fusion Payload", "type": "main", "index": 0 },
-          { "node": "💾 Store Signal Event", "type": "main", "index": 0 }
-        ],
-        [{ "node": "🟢 No Anomaly (Skip)", "type": "main", "index": 0 }]
+          {
+            "node": "Fetch ED Triage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Absenteeism",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
-    },
-    "🧩 Build Fusion Payload": {
-      "main": [[
-        { "node": "🧠 Call Enhanced Analysis API", "type": "main", "index": 0 },
-        { "node": "🔬 Call Simple Fusion Engine", "type": "main", "index": 0 }
-      ]]
-    },
-    "🧠 Call Enhanced Analysis API": {
-      "main": [[{ "node": "🔀 Merge Bayesian Results", "type": "main", "index": 0 }]]
-    },
-    "🔬 Call Simple Fusion Engine": {
-      "main": [[{ "node": "🔀 Merge Bayesian Results", "type": "main", "index": 0 }]]
-    },
-    "🔀 Merge Bayesian Results": {
-      "main": [[{ "node": "🎯 Alert Tier ≥ 1?", "type": "main", "index": 0 }]]
-    },
-    "🎯 Alert Tier ≥ 1?": {
-      "main": [
-        [{ "node": "🔀 Normalize Alert Tier", "type": "main", "index": 0 }],
-        [{ "node": "🟡 Below Tier 1 (Skip)", "type": "main", "index": 0 }]
-      ]
-    },
-    "🔀 Normalize Alert Tier": {
-      "main": [[
-        { "node": "🔄 Tier Switch (1/2/3/Normal)", "type": "main", "index": 0 },
-        { "node": "💾 Store Risk Assessment", "type": "main", "index": 0 }
-      ]]
-    },
-    "🔄 Tier Switch (1/2/3/Normal)": {
-      "main": [
-        [{ "node": "🚨 TIER 1 — Emergency Handler", "type": "main", "index": 0 }],
-        [{ "node": "⚠️ TIER 2 — Advisory Handler", "type": "main", "index": 0 }],
-        [{ "node": "👁 TIER 3 — Watch Handler", "type": "main", "index": 0 }],
-        [{ "node": "✅ Normal — No Alert", "type": "main", "index": 0 }]
-      ]
-    },
-    "🚨 TIER 1 — Emergency Handler": {
-      "main": [[{ "node": "📋 Record Dispatch + Audit", "type": "main", "index": 0 }]]
-    },
-    "⚠️ TIER 2 — Advisory Handler": {
-      "main": [[{ "node": "📋 Record Dispatch + Audit", "type": "main", "index": 0 }]]
-    },
-    "👁 TIER 3 — Watch Handler": {
-      "main": [[{ "node": "📋 Record Dispatch + Audit", "type": "main", "index": 0 }]]
-    },
-    "✅ Normal — No Alert": {
-      "main": [[{ "node": "📋 Record Dispatch + Audit", "type": "main", "index": 0 }]]
-    },
-    "📋 Record Dispatch + Audit": {
-      "main": [[
-        { "node": "💾 Write Dispatch to DB", "type": "main", "index": 0 },
-        { "node": "📝 Write Audit Log", "type": "main", "index": 0 }
-      ]]
     },
     "⏱ Cron: SLA Watch (5min)": {
-      "main": [[{ "node": "📋 Find Unacknowledged Dispatches", "type": "main", "index": 0 }]]
-    },
-    "📋 Find Unacknowledged Dispatches": {
-      "main": [[{ "node": "🔢 Count Pending Dispatches", "type": "main", "index": 0 }]]
-    },
-    "🔢 Count Pending Dispatches": {
-      "main": [[{ "node": "⚠️ SLA Breach?", "type": "main", "index": 0 }]]
-    },
-    "⚠️ SLA Breach?": {
-      "main": [
-        [{ "node": "📟 PagerDuty SLA Alert", "type": "main", "index": 0 }],
-        []
-      ]
-    },
-    "💥 Error Trigger": {
-      "main": [[{ "node": "🔍 Classify Error", "type": "main", "index": 0 }]]
-    },
-    "🔍 Classify Error": {
-      "main": [[
-        { "node": "💾 Log Error to DB", "type": "main", "index": 0 },
-        { "node": "📟 Should Page On-Call?", "type": "main", "index": 0 }
-      ]]
-    },
-    "📟 Should Page On-Call?": {
       "main": [
         [
-          { "node": "📟 PagerDuty On-Call", "type": "main", "index": 0 },
-          { "node": "☠️ Error → DLQ", "type": "main", "index": 0 }
+          {
+            "node": "Find Unacknowledged Dispatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Publish to Kafka",
+            "type": "main",
+            "index": 0
+          }
         ],
-        [{ "node": "☠️ Error → DLQ", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Dead Letter Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        [
+          {
+            "node": "Record Dispatch + Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email1": {
+      "main": [
+        [
+          {
+            "node": "Record Dispatch + Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch CDC NWSS Wastewater": {
+      "main": [
+        [
+          {
+            "node": "Master Normalizer (All Sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Pharmacy Data": {
+      "main": [
+        [
+          {
+            "node": "Master Normalizer (All Sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Search Trends": {
+      "main": [
+        [
+          {
+            "node": "Master Normalizer (All Sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Absenteeism": {
+      "main": [
+        [
+          {
+            "node": "Master Normalizer (All Sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch ED Triage": {
+      "main": [
+        [
+          {
+            "node": "Master Normalizer (All Sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Master Normalizer (All Sources)": {
+      "main": [
+        [
+          {
+            "node": "Validation Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Gate": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kafka Consumer (All Topics)": {
+      "main": [
+        [
+          {
+            "node": "Enrich + Guarantee ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich + Guarantee ID": {
+      "main": [
+        [
+          {
+            "node": "Fetch Baseline Stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Baseline Stats": {
+      "main": [
+        [
+          {
+            "node": "Z-Score Anomaly Detector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Z-Score Anomaly Detector": {
+      "main": [
+        [
+          {
+            "node": "Store Signal Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Signal Event": {
+      "main": [
+        [
+          {
+            "node": "Is Anomaly?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Anomaly?": {
+      "main": [
+        [
+          {
+            "node": "Build Fusion Payload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Anomaly (Skip)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Fusion Payload": {
+      "main": [
+        [
+          {
+            "node": "Merge Bayesian Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Bayesian Results": {
+      "main": [
+        [
+          {
+            "node": "Alert Tier ≥ 1?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Tier ≥ 1?": {
+      "main": [
+        [
+          {
+            "node": "Normalize Alert Tier",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Below Tier 1 (Skip)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Alert Tier": {
+      "main": [
+        [
+          {
+            "node": "Tier Switch (1/2/3/Normal)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Store Risk Assessment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normal — No Alert": {
+      "main": [
+        [
+          {
+            "node": "Record Dispatch + Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tier Switch (1/2/3/Normal)": {
+      "main": [
+        [
+          {
+            "node": "TIER 1 — Emergency Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TIER 2 — Advisory Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TIER 3 — Watch Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normal — No Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TIER 1 — Emergency Handler": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TIER 2 — Advisory Handler": {
+      "main": [
+        [
+          {
+            "node": "Send an Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TIER 3 — Watch Handler": {
+      "main": [
+        [
+          {
+            "node": "Record Dispatch + Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Dispatch + Audit": {
+      "main": [
+        [
+          {
+            "node": "Write Dispatch to DB",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Write Audit Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Unacknowledged Dispatches": {
+      "main": [
+        [
+          {
+            "node": "Count Pending Dispatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count Pending Dispatches": {
+      "main": [
+        [
+          {
+            "node": "SLA Breach?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SLA Breach?": {
+      "main": [
+        [
+          {
+            "node": "PagerDuty SLA Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Classify Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Error": {
+      "main": [
+        [
+          {
+            "node": "Log Error to DB",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Should Page On-Call?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Page On-Call?": {
+      "main": [
+        [
+          {
+            "node": "PagerDuty On-Call",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error → DLQ",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
-
+  "active": true,
   "settings": {
     "executionOrder": "v1",
-    "errorWorkflow": "💥 Error Trigger",
-    "maxExecutionTimeout": 60,
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
     "saveManualExecutions": true,
-    "saveExecutionProgress": true
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-
-  "tags": ["pulsechain", "epidemiological", "unified", "v3", "bayesian", "ingestion", "detection", "routing", "audit", "sla", "error-handling"],
-
+  "versionId": "cae9f9df-bba4-4804-b219-9b5b88ad413b",
   "meta": {
-    "description": "PulseChain Unified Epidemiological Signal Detection Engine v3.0 — FIXED: Kafka uses credentials instead of env brokers; Postgres uses executeQuery for baselines; IF nodes upgraded to typeVersion 2 with new conditions schema; $env replaced with $vars for PagerDuty key; crypto.createHash replaced with pure-JS hash; all API calls use sendBody instead of deprecated jsonParameters; typeVersion 2.5 for all Postgres insert nodes with proper schema/table selectors."
-  }
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3d91f8225efbbcb35a88e8b6603f1e2a2424dd29a49732ac40a1c6cecb02bba"
+  },
+  "id": "nrq3IYv3bjtGt91v",
+  "tags": []
 }
