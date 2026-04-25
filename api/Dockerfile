@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir \
     psycopg2-binary==2.9.9 \
     redis==5.0.3
 
-COPY api/ /app/
+COPY . /app/
 
 EXPOSE 8000
 
