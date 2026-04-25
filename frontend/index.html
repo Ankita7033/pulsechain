@@ -202,7 +202,7 @@ aside{background:var(--s1);border-right:1px solid var(--border);overflow-y:auto;
 </div>
 </main>
 <script>
-const API = 'http://localhost:8000';
+const API = 'https://pulsechain-production.up.railway.app';
 const fmt=n=>n==null?'—':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n<.1?n.toFixed(4):n.toFixed(1);
 const pct=v=>v==null?'—':(v*100).toFixed(1)+'%';
 const tcol=p=>p>=.75?'var(--red)':p>=.50?'var(--amber)':p>=.25?'var(--blue)':'var(--green)';
