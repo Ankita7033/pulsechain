@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PulseChain v2 — Bayesian Epidemiological Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#05080d;--s1:#0a1018;--s2:#0f1825;--s3:#162035;--border:rgba(0,200,180,0.10);--border2:rgba(0,200,180,0.22);--text:#b8ccd8;--muted:#4a6a80;--dim:#2a4a5a;--teal:#00c8b4;--blue:#3ab4f0;--amber:#f0a020;--red:#e83840;--green:#22c572;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;}
+body{min-height:100vh;display:flex;flex-direction:column;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);}
+header{display:flex;align-items:center;justify-content:space-between;padding:11px 22px;background:var(--s1);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:9px;}
+.logo-icon{width:26px;height:26px;border-radius:5px;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-size:13px;}
+.logo-name{font-family:var(--mono);font-size:13px;color:#fff;letter-spacing:.05em;}
+.logo-ver{font-size:8px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-left:5px;}
+.hdr-right{display:flex;align-items:center;gap:16px;}
+.ws-row{display:flex;align-items:center;gap:5px;}
+.wdot{width:6px;height:6px;border-radius:50%;background:var(--muted);}
+.wdot.live{background:var(--green);animation:pdot 2s ease-in-out infinite;box-shadow:0 0 6px var(--green);}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.3}}
+.wlbl{font-family:var(--mono);font-size:9px;color:var(--muted);}
+.clk{font-family:var(--mono);font-size:10px;color:var(--dim);}
+.api-status{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;background:rgba(0,200,180,.1);color:var(--teal);}
+.api-status.err{background:rgba(232,56,64,.1);color:var(--red);}
+main{flex:1;display:grid;grid-template-columns:210px 1fr 270px;height:calc(100vh - 48px);overflow:hidden;}
+aside{background:var(--s1);border-right:1px solid var(--border);overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:18px;}
+.sec{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);font-family:var(--mono);margin-bottom:7px;}
+.sc{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;cursor:pointer;transition:border-color .2s;margin-bottom:5px;position:relative;overflow:hidden;}
+.sc:hover{border-color:var(--border2);}
+.sc.anomaly{border-color:rgba(232,56,64,.4);}
+.sc.elevated{border-color:rgba(240,160,32,.35);}
+.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--teal);border-radius:7px 0 0 7px;}
+.sc.anomaly::before{background:var(--red);}
+.sc.elevated::before{background:var(--amber);}
+.sc-lbl{font-size:8px;font-family:var(--mono);color:var(--teal);margin-bottom:3px;letter-spacing:.05em;}
+.sc-val{font-size:17px;font-weight:600;color:#fff;line-height:1;}
+.sc-unit{font-size:7px;color:var(--muted);margin-top:1px;}
+.sc-z{position:absolute;top:9px;right:9px;font-size:8px;font-family:var(--mono);padding:1px 4px;border-radius:2px;background:rgba(0,200,180,.1);color:var(--teal);}
+.sc-z.hi{background:rgba(232,56,64,.15);color:var(--red);}
+.sc-z.wn{background:rgba(240,160,32,.15);color:var(--amber);}
+.sc-track{height:2px;background:var(--border);border-radius:1px;margin-top:6px;}
+.sc-fill{height:100%;border-radius:1px;background:var(--teal);transition:width .8s ease;}
+.sc-fill.hi{background:var(--red);}
+.sc-fill.wn{background:var(--amber);}
+.srow{display:flex;justify-content:space-between;font-size:9px;font-family:var(--mono);color:var(--muted);margin-bottom:4px;}
+.sv{color:var(--text);}
+.sv.ok{color:var(--green);}
+.content{display:flex;flex-direction:column;overflow:hidden;}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);background:var(--border);}
+.kpi{background:var(--s1);padding:11px 15px;}
+.kpi-lbl{font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-family:var(--mono);}
+.kpi-val{font-size:21px;font-weight:600;font-family:var(--mono);color:#fff;line-height:1;margin:2px 0;}
+.kpi-val.ok{color:var(--green);}
+.kpi-val.wn{color:var(--amber);}
+.kpi-val.cr{color:var(--red);}
+.kpi-sub{font-size:8px;color:var(--muted);}
+.ci{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;}
+.slbl{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-family:var(--mono);margin-bottom:8px;}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.rcard{background:var(--s1);border:1px solid var(--border);border-radius:9px;padding:12px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.rcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green);border-radius:9px 0 0 9px;}
+.rcard.t1::before{background:var(--red);box-shadow:0 0 7px var(--red);}
+.rcard.t2::before{background:var(--amber);}
+.rcard.t3::before{background:var(--blue);}
+.rcard:hover{border-color:var(--border2);transform:translateY(-1px);}
+.r-nm{font-size:11px;font-weight:600;color:#fff;margin-bottom:2px;}
+.r-tb{display:inline-flex;align-items:center;gap:4px;font-size:7px;font-family:var(--mono);padding:2px 6px;border-radius:3px;margin-bottom:9px;letter-spacing:.05em;}
+.tb0{background:rgba(34,197,114,.1);color:var(--green);}
+.tb1{background:rgba(232,56,64,.14);color:var(--red);}
+.tb2{background:rgba(240,160,32,.13);color:var(--amber);}
+.tb3{background:rgba(58,180,240,.11);color:var(--blue);}
+.tdot{width:4px;height:4px;border-radius:50%;background:currentColor;}
+.g-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:3px;}
+.g-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1),background .5s;}
+.g-row{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);}
+.g-sc{font-family:var(--mono);font-size:11px;color:#fff;font-weight:600;}
+.r-ci-txt{font-size:8px;color:var(--dim);font-family:var(--mono);margin-top:1px;}
+.r-dom{font-size:8px;color:var(--muted);margin-top:5px;border-top:1px solid var(--border);padding-top:5px;}
+.logwrap{background:var(--s1);border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.log-h{padding:7px 11px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.log-hl{font-size:8px;font-family:var(--mono);color:var(--muted);letter-spacing:.09em;text-transform:uppercase;}
+.log-bd{max-height:160px;overflow-y:auto;}
+.lr{display:grid;grid-template-columns:60px 72px 72px 1fr 32px;gap:7px;padding:5px 11px;font-size:8px;font-family:var(--mono);border-bottom:1px solid var(--border);align-items:center;animation:lin .22s ease;}
+@keyframes lin{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.lr:last-child{border-bottom:none;}
+.lt{color:var(--dim);}.ls{color:var(--teal);}.lrg{color:var(--text);}.lm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);}
+.tbadge{font-size:7px;padding:1px 4px;border-radius:2px;font-weight:600;text-align:center;}
+.t0b{background:rgba(34,197,114,.1);color:var(--green);}
+.t1b{background:rgba(232,56,64,.13);color:var(--red);}
+.t2b{background:rgba(240,160,32,.13);color:var(--amber);}
+.t3b{background:rgba(58,180,240,.11);color:var(--blue);}
+.rpanel{background:var(--s1);border-left:1px solid var(--border);overflow-y:auto;padding:14px 11px;display:flex;flex-direction:column;gap:14px;}
+.bcard{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:11px 13px;}
+.btitle{font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-family:var(--mono);margin-bottom:8px;}
+.bprob{font-size:26px;font-weight:600;font-family:var(--mono);color:#fff;line-height:1;}
+.bci{font-size:8px;font-family:var(--mono);color:var(--dim);margin-top:2px;}
+.bconf{font-size:9px;color:var(--muted);margin-top:5px;}
+.drow{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.dlbl{font-size:8px;font-family:var(--mono);color:var(--text);width:82px;flex-shrink:0;}
+.dz{font-size:8px;font-family:var(--mono);color:var(--teal);width:38px;text-align:right;flex-shrink:0;}
+.dz.hi{color:var(--red);}
+.dz.wn{color:var(--amber);}
+.dtrack{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.dfill{height:100%;background:var(--teal);border-radius:2px;transition:width .8s ease;}
+.dfill.hi{background:var(--red);}
+.dfill.wn{background:var(--amber);}
+.dpct{font-size:7px;font-family:var(--mono);color:var(--dim);width:22px;text-align:right;flex-shrink:0;}
+.af{position:fixed;top:54px;right:16px;z-index:500;background:var(--s2);border:1px solid var(--border2);border-radius:9px;padding:13px 16px;max-width:310px;box-shadow:0 8px 28px rgba(0,0,0,.6);transform:translateX(120%);transition:transform .32s cubic-bezier(.4,0,.2,1);}
+.af.show{transform:translateX(0);}
+.af.t1{border-color:rgba(232,56,64,.5);box-shadow:0 8px 28px rgba(232,56,64,.17);}
+.af.t2{border-color:rgba(240,160,32,.4);}
+.af-h{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.af-icon{font-size:15px;}
+.af-title{font-family:var(--mono);font-size:10px;font-weight:600;}
+.af-body{font-size:9px;color:var(--muted);line-height:1.5;}
+.af-x{position:absolute;top:7px;right:9px;cursor:pointer;color:var(--muted);font-size:13px;background:none;border:none;}
+.live-badge{font-size:7px;font-family:var(--mono);padding:1px 5px;border-radius:2px;background:rgba(34,197,114,.15);color:var(--green);letter-spacing:.05em;}
+.sim-badge{font-size:7px;font-family:var(--mono);padding:1px 5px;border-radius:2px;background:rgba(240,160,32,.15);color:var(--amber);letter-spacing:.05em;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="af" id="af">
+  <button class="af-x" onclick="document.getElementById('af').classList.remove('show')">×</button>
+  <div class="af-h"><span class="af-icon" id="afI">🚨</span><span class="af-title" id="afT">ALERT</span></div>
+  <div class="af-body" id="afB"></div>
+</div>
+<header>
+  <div class="logo">
+    <div class="logo-icon">🦠</div>
+    <div><span class="logo-name">PULSECHAIN</span><span class="logo-ver">v2 · Bayesian Fusion · Live Data</span></div>
+  </div>
+  <div class="hdr-right">
+    <span id="dataBadge" class="sim-badge">SIM</span>
+    <div class="ws-row"><div class="wdot" id="wdot"></div><span class="wlbl" id="wlbl">CONNECTING</span></div>
+    <div class="clk" id="clk">—</div>
+  </div>
+</header>
+<main>
+<aside>
+  <div><div class="sec">Live Signals</div><div id="sCards"><div style="font-size:8px;color:var(--dim);font-family:var(--mono);">Loading...</div></div></div>
+  <div>
+    <div class="sec">System</div>
+    <div class="srow"><span>API</span><span class="sv" id="sApi">checking…</span></div>
+    <div class="srow"><span>Assessments</span><span class="sv" id="sAssess">—</span></div>
+    <div class="srow"><span>DLQ depth</span><span class="sv" id="sDlq">—</span></div>
+    <div class="srow"><span>Last fetch</span><span class="sv" id="sLast">—</span></div>
+    <div class="srow"><span>Uptime</span><span class="sv ok" id="sUp">—</span></div>
+    <div class="srow"><span>Model</span><span class="sv ok">Bayesian</span></div>
+  </div>
+  <div>
+    <div class="sec">Links</div>
+    <a href="http://localhost:5678" target="_blank" style="display:block;font-size:8px;color:var(--teal);text-decoration:none;font-family:var(--mono);margin-bottom:4px;">→ n8n UI</a>
+    <a href="http://localhost:3000" target="_blank" style="display:block;font-size:8px;color:var(--teal);text-decoration:none;font-family:var(--mono);margin-bottom:4px;">→ Grafana</a>
+    <a href="http://localhost:8000/docs" target="_blank" style="display:block;font-size:8px;color:var(--teal);text-decoration:none;font-family:var(--mono);">→ API Docs</a>
+  </div>
+</aside>
+<div class="content">
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-lbl">Active Alerts</div><div class="kpi-val" id="kA">—</div><div class="kpi-sub">all regions</div></div>
+    <div class="kpi"><div class="kpi-lbl">Max P(Outbreak)</div><div class="kpi-val" id="kP">—</div><div class="kpi-sub" id="kR">loading…</div></div>
+    <div class="kpi"><div class="kpi-lbl">Assessments Today</div><div class="kpi-val" id="kE">—</div><div class="kpi-sub">from DB</div></div>
+    <div class="kpi"><div class="kpi-lbl">Detection Lead</div><div class="kpi-val ok">+9.3d</div><div class="kpi-sub">vs ILINet</div></div>
+  </div>
+  <div class="ci">
+    <div><div class="slbl">Regional Risk · Bayesian Posterior P(Outbreak) · <span id="dataSource" style="color:var(--teal)">loading...</span></div><div class="rgrid" id="rGrid"><div style="font-size:8px;color:var(--dim);font-family:var(--mono);padding:10px;">Fetching live data...</div></div></div>
+    <div>
+      <div class="slbl">Live Pipeline Events · <span id="auditSource" style="color:var(--teal)">from audit_log</span></div>
+      <div class="logwrap">
+        <div class="log-h"><span class="log-hl">Event Stream</span><span style="font-size:8px;font-family:var(--mono);color:var(--muted);" id="lCnt">0</span></div>
+        <div class="log-bd" id="elog"><div style="font-size:8px;color:var(--dim);font-family:var(--mono);padding:10px;">Loading audit log...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="rpanel">
+  <div>
+    <div class="sec">Bayesian Posterior · <span id="rFocus" style="color:var(--teal);">—</span></div>
+    <div class="bcard">
+      <div class="btitle">P(Outbreak | Signals)</div>
+      <div class="bprob" id="bProb">—</div>
+      <div class="bci" id="bCI">90% CI: —</div>
+      <div class="bconf" id="bConf">Confidence: —</div>
+      <div style="font-size:7px;color:var(--dim);margin-top:3px;font-family:var(--mono);">Prior: 2% · Method: Bayesian fusion</div>
+    </div>
+  </div>
+  <div>
+    <div class="sec">Alert Details</div>
+    <div id="dWrap"><div style="font-size:8px;color:var(--dim);font-family:var(--mono);">Select a region</div></div>
+  </div>
+  <div>
+    <div class="sec">AI Narrative</div>
+    <div id="narrativeWrap" style="font-size:8px;color:var(--muted);line-height:1.7;font-family:var(--mono);">—</div>
+  </div>
+  <div>
+    <div class="sec">Recommended Actions</div>
+    <div id="actWrap" style="font-size:8px;color:var(--muted);line-height:1.7;font-family:var(--mono);">Continue routine monitoring</div>
+  </div>
+</div>
+</main>
+<script>
+const API = 'http://localhost:8000';
+const fmt=n=>n==null?'—':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n<.1?n.toFixed(4):n.toFixed(1);
+const pct=v=>v==null?'—':(v*100).toFixed(1)+'%';
+const tcol=p=>p>=.75?'var(--red)':p>=.50?'var(--amber)':p>=.25?'var(--blue)':'var(--green)';
+const tcls=t=>['t0','t1','t2','t3'][t]||'t0';
+const tlbl=t=>['NORMAL','EMERGENCY','ADVISORY','WATCH'][t]||'NORMAL';
+const tbadge=t=>['tb0','tb1','tb2','tb3'][t]||'tb0';
+
+let liveData = [];
+let focusedRegion = null;
+let evCnt = 0;
+let afTmr = null;
+let startT = Date.now();
+let isLive = false;
+let prevTiers = {};
+
+// Clock
+setInterval(()=>{
+  document.getElementById('clk').textContent=new Date().toUTCString().slice(17,25)+' UTC';
+  const se=Math.floor((Date.now()-startT)/1000);
+  document.getElementById('sUp').textContent=`${String(Math.floor(se/3600)).padStart(2,'0')}:${String(Math.floor(se%3600/60)).padStart(2,'0')}:${String(se%60).padStart(2,'0')}`;
+},1000);
+
+// Check API health
+async function checkHealth() {
+  try {
+    const r = await fetch(`${API}/health`, {signal: AbortSignal.timeout(3000)});
+    if (r.ok) {
+      document.getElementById('sApi').textContent = 'online';
+      document.getElementById('sApi').className = 'sv ok';
+      document.getElementById('wdot').classList.add('live');
+      document.getElementById('wlbl').textContent = 'LIVE';
+      document.getElementById('dataBadge').textContent = 'LIVE';
+      document.getElementById('dataBadge').className = 'live-badge';
+      isLive = true;
+      return true;
+    }
+  } catch(e) {}
+  document.getElementById('sApi').textContent = 'offline';
+  document.getElementById('sApi').className = 'sv';
+  document.getElementById('wlbl').textContent = 'API DOWN';
+  isLive = false;
+  return false;
+}
+
+// Fetch latest assessments from DB via API
+async function fetchAssessments() {
+  try {
+    const r = await fetch(`${API}/v1/assessments/latest`, {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) return null;
+    const data = await r.json();
+    return data;
+  } catch(e) { return null; }
+}
+
+// Fetch audit log
+async function fetchAudit() {
+  try {
+    const r = await fetch(`${API}/v1/audit?limit=20`, {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+// Fetch DLQ stats
+async function fetchDLQ() {
+  try {
+    const r = await fetch(`${API}/v1/dlq/stats`, {signal: AbortSignal.timeout(3000)});
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+// Fetch recent assessments count
+async function fetchAssessmentCount() {
+  try {
+    const r = await fetch(`${API}/v1/assessments?limit=100`, {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) return null;
+    const data = await r.json();
+    return Array.isArray(data) ? data.length : null;
+  } catch(e) { return null; }
+}
+
+function showAlert(tier, region, post, summary) {
+  const af = document.getElementById('af');
+  const icons = {1:'🚨',2:'⚠️',3:'👁'};
+  document.getElementById('afI').textContent = icons[tier]||'📊';
+  document.getElementById('afT').textContent = ['','TIER 1 EMERGENCY','TIER 2 ADVISORY','TIER 3 WATCH'][tier]||'ALERT';
+  document.getElementById('afB').textContent = `${region} — P(outbreak)=${pct(post)}\n${(summary||'').slice(0,160)}`;
+  af.className = `af show t${tier}`;
+  if (afTmr) clearTimeout(afTmr);
+  afTmr = setTimeout(()=>af.classList.remove('show'), tier===1?9000:5000);
+}
+
+function addLog(time, src, region, msg, tier) {
+  const log = document.getElementById('elog');
+  const row = document.createElement('div');
+  row.className = 'lr';
+  const t = time ? new Date(time).toTimeString().slice(0,8) : new Date().toTimeString().slice(0,8);
+  row.innerHTML = `<span class="lt">${t}</span><span class="ls">${(src||'SYS').slice(0,10).toUpperCase()}</span><span class="lrg">${(region||'—').slice(0,10)}</span><span class="lm">${msg||''}</span><span class="tbadge t${tier||0}b">T${tier||0}</span>`;
+  log.prepend(row);
+  while(log.children.length > 50) log.removeChild(log.lastChild);
+  document.getElementById('lCnt').textContent = `${++evCnt} events`;
+}
+
+function renderRegions(assessments) {
+  if (!assessments || assessments.length === 0) {
+    document.getElementById('rGrid').innerHTML = '<div style="font-size:8px;color:var(--dim);font-family:var(--mono);padding:10px;grid-column:1/-1;">No assessments yet. Run the workflow to generate data.</div>';
+    return;
+  }
+
+  document.getElementById('dataSource').textContent = `${assessments.length} regions · live DB`;
+
+  // Check for new alerts
+  assessments.forEach(r => {
+    const prev = prevTiers[r.region];
+    if (prev !== undefined && r.alert_tier > 0 && r.alert_tier !== prev) {
+      showAlert(r.alert_tier, r.region_name || r.region, r.risk_score, r.ai_narrative || '');
+    }
+    prevTiers[r.region] = r.alert_tier;
+  });
+
+  document.getElementById('rGrid').innerHTML = assessments.map(r => {
+    const p = r.risk_score || 0;
+    const t = r.alert_tier || 0;
+    const col = tcol(p);
+    const tc = tcls(t);
+    const tb = tbadge(t);
+    const tl = tlbl(t);
+    const pDisplay = (p * 100).toFixed(1);
+    return `<div class="rcard ${tc}" onclick="focusRegion('${r.region}')">
+      <div class="r-nm">${r.region_name || r.region}</div>
+      <div class="r-tb ${tb}"><span class="tdot"></span>${tl}</div>
+      <div class="g-track"><div class="g-fill" style="width:${pDisplay}%;background:${col};"></div></div>
+      <div class="g-row"><span>P(Outbreak)</span><span class="g-sc">${pct(p)}</span></div>
+      <div class="r-ci-txt">Conf ${r.confidence ? pct(r.confidence) : '—'} · ${r.assessed_at ? new Date(r.assessed_at).toLocaleTimeString() : '—'}</div>
+      <div class="r-dom">${r.dominant_signal ? 'Dominant: '+r.dominant_signal : 'No dominant signal'}</div>
+    </div>`;
+  }).join('');
+
+  // Update KPIs
+  const active = assessments.filter(r => r.alert_tier >= 1).length;
+  const maxR = assessments.reduce((a,b) => (a.risk_score||0) > (b.risk_score||0) ? a : b, assessments[0]);
+  const kA = document.getElementById('kA');
+  kA.textContent = active;
+  kA.className = 'kpi-val ' + (active > 0 ? (active > 1 ? 'cr' : 'wn') : 'ok');
+  document.getElementById('kP').textContent = pct(maxR?.risk_score || 0);
+  document.getElementById('kP').className = 'kpi-val ' + ((maxR?.risk_score||0) >= .75 ? 'cr' : (maxR?.risk_score||0) >= .50 ? 'wn' : 'ok');
+  document.getElementById('kR').textContent = maxR?.region_name || maxR?.region || '—';
+  document.getElementById('sAssess').textContent = assessments.length;
+
+  // Update right panel if focused
+  if (focusedRegion) {
+    const r = assessments.find(x => x.region === focusedRegion);
+    if (r) renderRPanel(r);
+  } else if (assessments.length > 0) {
+    focusedRegion = assessments[0].region;
+    renderRPanel(assessments[0]);
+  }
+
+  liveData = assessments;
+}
+
+function renderRPanel(r) {
+  document.getElementById('rFocus').textContent = r.region_name || r.region;
+  const prob = document.getElementById('bProb');
+  prob.textContent = pct(r.risk_score || 0);
+  prob.style.color = tcol(r.risk_score || 0);
+  document.getElementById('bCI').textContent = r.credible_interval ?
+    `90% CI: [${pct(r.credible_interval[0])}–${pct(r.credible_interval[1])}]` : '90% CI: —';
+  document.getElementById('bConf').textContent = `Confidence: ${r.confidence ? pct(r.confidence) : '—'} · Tier: ${tlbl(r.alert_tier||0)}`;
+
+  // Signal breakdown
+  const dw = document.getElementById('dWrap');
+  const breakdown = r.signal_breakdown;
+  if (breakdown && typeof breakdown === 'object' && Object.keys(breakdown).length > 0) {
+    const entries = Object.entries(breakdown).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]);
+    dw.innerHTML = entries.map(([src, score]) => {
+      const pct2 = Math.min(100, score * 100);
+      const zcls = score >= 0.75 ? 'hi' : score >= 0.5 ? 'wn' : '';
+      return `<div class="drow">
+        <span class="dlbl">${src.replace('_',' ')}</span>
+        <span class="dz ${zcls}">${(score*100).toFixed(0)}%</span>
+        <div class="dtrack"><div class="dfill ${zcls}" style="width:${pct2}%"></div></div>
+      </div>`;
+    }).join('') || '<div style="font-size:8px;color:var(--dim);font-family:var(--mono);">No signal breakdown</div>';
+  } else {
+    dw.innerHTML = '<div style="font-size:8px;color:var(--dim);font-family:var(--mono);">No elevated signals</div>';
+  }
+
+  // AI narrative
+  document.getElementById('narrativeWrap').textContent = r.ai_narrative || '—';
+
+  // Recommended actions based on tier
+  const ACTS = {
+    1: ['Notify health authority immediately','Activate emergency protocol','Dispatch field team','Issue public advisory'],
+    2: ['Notify regional health dept (2h)','Increase ED surveillance','Alert hospitals','Draft public advisory'],
+    3: ['Enhanced monitoring','Cross-verify with lab data','Review in 24h'],
+    0: ['Continue routine monitoring']
+  };
+  const acts = ACTS[r.alert_tier||0] || ACTS[0];
+  document.getElementById('actWrap').innerHTML = acts.map(a =>
+    `<div style="margin-bottom:2px;padding-left:9px;position:relative;"><span style="position:absolute;left:0;color:var(--teal);">›</span>${a}</div>`
+  ).join('');
+}
+
+function focusRegion(id) {
+  focusedRegion = id;
+  const r = liveData.find(x => x.region === id);
+  if (r) renderRPanel(r);
+}
+
+function renderAuditLog(entries) {
+  if (!entries || entries.length === 0) return;
+  const log = document.getElementById('elog');
+  log.innerHTML = '';
+  evCnt = 0;
+  entries.slice(0, 20).forEach(e => {
+    addLog(e.logged_at, e.node_name || 'system', e.metadata?.region || '—', e.action || '—', e.decision_tier || 0);
+  });
+}
+
+// Signal cards — show from latest assessment signal breakdown
+function renderSignalCards(assessments) {
+  if (!assessments || assessments.length === 0) return;
+  const top = assessments.find(r => (r.risk_score||0) > 0) || assessments[0];
+  const breakdown = top?.signal_breakdown || {};
+  const SIG = ['wastewater','pharmacy','absenteeism','ed_triage','search_trends'];
+  const UNITS = {wastewater:'cp/mL',pharmacy:'idx',absenteeism:'frac',ed_triage:'kw_rate',search_trends:'score'};
+
+  document.getElementById('sCards').innerHTML = SIG.map(k => {
+    const score = breakdown[k] || 0;
+    const an = score >= 0.75, el = score >= 0.5 && score < 0.75;
+    const zcls = an ? 'hi' : el ? 'wn' : '';
+    const p = Math.min(100, score * 100);
+    return `<div class="sc ${an?'anomaly':el?'elevated':''}">
+      <div class="sc-lbl">${k.replace('_',' ').toUpperCase()}</div>
+      <div class="sc-val">${(score*100).toFixed(0)}%</div>
+      <div class="sc-unit">${UNITS[k]||'idx'}</div>
+      <div class="sc-z ${zcls}">${an?'ANOM':el?'ELEV':'NORM'}</div>
+      <div class="sc-track"><div class="sc-fill ${zcls}" style="width:${p}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// Main polling loop
+async function poll() {
+  const alive = await checkHealth();
+  if (!alive) {
+    document.getElementById('rGrid').innerHTML = '<div style="font-size:8px;color:var(--red);font-family:var(--mono);padding:10px;grid-column:1/-1;">⚠ API offline — cannot fetch live data</div>';
+    return;
+  }
+
+  // Fetch all data in parallel
+  const [assessments, audit, dlq, count] = await Promise.all([
+    fetchAssessments(),
+    fetchAudit(),
+    fetchDLQ(),
+    fetchAssessmentCount()
+  ]);
+
+  if (assessments) renderRegions(assessments);
+  if (audit) renderAuditLog(Array.isArray(audit) ? audit : audit.entries || []);
+  if (dlq) document.getElementById('sDlq').textContent = dlq.depth ?? dlq.count ?? '0';
+  if (count !== null) document.getElementById('kE').textContent = count;
+
+  document.getElementById('sLast').textContent = new Date().toTimeString().slice(0,8);
+}
+
+// Initial load + poll every 5 seconds
+poll();
+setInterval(poll, 5000);
+</script>
+</body>
+</html>
