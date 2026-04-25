@@ -1,0 +1,30 @@
+# Environment & secrets
+.env
+*.env
+
+# Docker volumes (too large)
+postgres_data/
+kafka_data/
+redis_data/
+grafana_data/
+prometheus_data/
+zookeeper_data/
+n8n_data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+.env

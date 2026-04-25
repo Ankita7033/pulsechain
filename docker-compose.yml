@@ -86,7 +86,7 @@ services:
     environment:
       POSTGRES_DB: pulsechain
       POSTGRES_USER: pulsechain
-      POSTGRES_PASSWORD: pulsechain_secure_pass
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./services/timescaledb/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
@@ -145,7 +145,7 @@ services:
 
       OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS: "true"
 
-      N8N_ENCRYPTION_KEY: pulsechain-super-secure-key-32chr
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
 
       N8N_DIAGNOSTICS_ENABLED: "false"
       N8N_VERSION_NOTIFICATIONS_ENABLED: "false"
